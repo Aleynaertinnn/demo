@@ -24,3 +24,7 @@ Plan, Maket veya Malzemeler düğmesini seç. Kamera ilgili bölgeye yaklaşır 
 ## Eskizden Makete
 
 Sahnenin altındaki sürgü, kamera açısını ve üç katın yükselmesini birlikte kontrol eder. Plan ve Maket düğmeleri sürgünün iki ucuna götürür. Tamamlanan maketin panelinden cephe seçimine geçebilirsin.
+
+## Çizim masası
+
+Genel görünümde iki mimarı ve plan, eskiz ile cephe çizimlerini görebilirsin. İlk mimarın kalemi ilerlerken plan çizgileri belirir. Diğer mimar cephe paftası üzerinde çalışır. Karakterler ve kâğıtlar `app/architects.jsx` içinde Three.js geometrileriyle oluşturulur.

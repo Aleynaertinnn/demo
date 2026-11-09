@@ -4,6 +4,7 @@ import { useRef, useState, useLayoutEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { gsap } from 'gsap'
 import { MathUtils, Vector3 } from 'three'
+import Architects from './architects'
 
 const stops = [
   { id: 'plan', number: '01', title: 'Plan', point: [-.88, .23, .68],
@@ -23,7 +24,7 @@ const materials = [
   { name: 'Beton', color: '#909da9' },
 ]
 
-const overview = { camera: [3.4, 3.3, 4.6], target: [0, .35, 0] }
+const overview = { camera: [2.7, 3.5, 5.7], target: [0, .52, -.55] }
 const opening = { camera: [5.6, 4.4, 7], target: overview.target }
 
 function cameraPose({ camera, target }) {
@@ -59,7 +60,7 @@ function Box({ position, size, color, rotation }) {
   )
 }
 
-function Desk({ motion, markers, finish }) {
+function Desk({ motion, markers, finish, reducedMotion }) {
   const projection = useRef(new Vector3())
   const floors = useRef([])
 
@@ -141,6 +142,7 @@ function Desk({ motion, markers, finish }) {
       <Box position={[-1.92, .74, -.8]} size={[.075, 1.08, .075]} color={white} />
       <Box position={[-1.62, 1.28, -.8]} size={[.65, .075, .075]} color={white} />
       <Box position={[-1.31, 1.21, -.8]} size={[.39, .17, .35]} color="#dd6241" />
+      <Architects reducedMotion={reducedMotion} />
     </>
   )
 }
@@ -151,6 +153,7 @@ export default function Hero() {
   const motion = useRef({ ...cameraPose(opening), build: 1 })
   const markers = useRef([])
   const cameraTween = useRef(null)
+  const reducedMotion = useRef(false)
   const [take, setTake] = useState(0)
   const [ready, setReady] = useState(false)
   const [progress, setProgress] = useState(100)
@@ -159,6 +162,7 @@ export default function Hero() {
 
   useLayoutEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    reducedMotion.current = reduceMotion
     if (reduceMotion) {
       Object.assign(motion.current, cameraPose(overview), { build: 1 })
       setReady(true)
@@ -221,14 +225,14 @@ export default function Hero() {
         <div className="intro" ref={copy}>
           <p className="index">01 / MİMARİ ESKİZ</p>
           <h1>Bir çizgiden<br />bir mekâna.</h1>
-          <p>Masadaki planı, maketi ve malzemeleri keşfet.</p>
+          <p>Mimarların çizimlerini izle, planın makete dönüşümünü keşfet.</p>
         </div>
         <figure>
           <div className="viewport" ref={viewport}>
             <Canvas dpr={[1, 1.5]} camera={{ position: [5.6, 4.4, 7], fov: 43 }}
               fallback={<p className="fallback">3D önizleme için WebGL gerekir.</p>}>
               <color attach="background" args={['#aab8d9']} />
-              <Desk motion={motion} markers={markers} finish={finish.color} />
+              <Desk motion={motion} markers={markers} finish={finish.color} reducedMotion={reducedMotion} />
             </Canvas>
             {ready && stops.map((stop, index) => (
               <button className="hotspot" key={stop.id} ref={node => { markers.current[index] = node }}
