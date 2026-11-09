@@ -26,9 +26,9 @@ const materials = [
 
 const overview = { camera: [2.7, 3.5, 5.7], target: [0, .52, -.55] }
 const atelierViews = [
-  { camera: [1.7, 1.48, -6.3], target: [-.75, .57, .15] },
-  { camera: [.5, 1.86, -4.2], target: [-.82, .47, -.27] },
-  { camera: [-.26, 2.15, -2.8], target: [-1.13, .2, -.54] },
+  { camera: [-.82, 1.02, -5.35], target: [-1.63, .6, .25] },
+  { camera: [-.48, 1.6, -3.72], target: [-1.16, .4, -.4] },
+  { camera: [.16, 2.58, -2.35], target: [-1.2, .22, -.55] },
 ]
 
 function atelierPose(progress) {
@@ -91,6 +91,37 @@ function Box({ position, size, color, rotation, outline = false, castShadow = fa
   )
 }
 
+const leaves = [
+  [-.34, .62, .14, -.66], [.32, .78, -.05, .65], [-.3, 1.16, .02, -.48],
+  [.34, 1.37, .08, .56], [-.29, 1.66, -.12, -.55], [.23, 1.98, 0, .38],
+  [.02, 2.15, -.07, -.12],
+]
+
+function Plant() {
+  return (
+    <group position={[-3.14, -1.39, .38]}>
+      <mesh position={[0, .34, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[.4, .29, .67, 24]} />
+        <meshToonMaterial color="#853529" />
+      </mesh>
+      <mesh position={[0, .67, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[.38, .027, 8, 28]} />
+        <meshToonMaterial color="#5c231e" />
+      </mesh>
+      <Box position={[0, 1.38, 0]} size={[.029, 1.51, .029]} color="#67271e" />
+      {leaves.map(([x, y, z, tilt], index) => (
+        <group key={y} position={[x, y, z]} rotation={[.1 + index * .08, .23 * (index % 3), tilt]}>
+          <mesh scale={[.25, .52, .045]} castShadow receiveShadow>
+            <sphereGeometry args={[1, 10, 8]} />
+            <meshToonMaterial color={index % 2 ? '#9d3e32' : '#70261f'} />
+          </mesh>
+          <Box position={[0, 0, -.045]} size={[.012, .84, .01]} color="#d07c61" />
+        </group>
+      ))}
+    </group>
+  )
+}
+
 function Room() {
   return (
     <group>
@@ -98,28 +129,33 @@ function Room() {
       {Array.from({ length: 19 }, (_, index) => (
         <Box key={index} position={[-6 + index * .66, -1.397, 0]} size={[.012, .004, 18]} color="#b77e6b" />
       ))}
-      <Box position={[0, 1.25, 3.2]} size={[12, 5.35, .16]} color="#efdbc4" />
+      <Box position={[0, 1.55, 3.2]} size={[22, 6, .16]} color="#ecd2b7" />
+      <Box position={[-4.75, 1.58, -.38]} size={[.16, 6, 7.25]} color="#a74c3c" />
+      <Box position={[0, 4.15, -.24]} size={[12, .18, 8]} color="#c48970" />
       <Box position={[0, -1.22, 3.08]} size={[12, .28, .08]} color="#9c3c31" />
-      <Box position={[-4.4, -.88, .4]} size={[.18, 1.04, 5.6]} color="#a74735" castShadow />
-      <Box position={[-4.4, 2.8, .4]} size={[.18, 1.3, 5.6]} color="#e3ba9b" castShadow />
-      <mesh position={[-7.4, .9, .8]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[12, 6]} />
-        <meshBasicMaterial color="#edc5a7" />
-      </mesh>
-      {[[-2.2, 1.4], [-.8, 2], [.65, 1.6], [2, 2.6], [3.15, 1.9]].map(([z, height]) => (
-        <mesh key={z} position={[-7.1, -1.35 + height / 2, z]}>
-          <boxGeometry args={[.12, height, 1.06]} />
-          <meshBasicMaterial color="#b17a69" />
+      <group position={[-1.3, 0, 0]} scale={[-1, 1, 1]}>
+        <Box position={[-4.4, -.88, .4]} size={[.18, 1.04, 5.6]} color="#a74735" castShadow />
+        <Box position={[-4.4, 2.8, .4]} size={[.18, 1.3, 5.6]} color="#e3ba9b" castShadow />
+        <mesh position={[-7.4, .9, .8]} rotation={[0, Math.PI / 2, 0]}>
+          <planeGeometry args={[12, 6]} />
+          <meshBasicMaterial color="#edc5a7" />
         </mesh>
-      ))}
-      {[-2.4, -.55, 1.3, 3.2].map(z => (
-        <Box key={z} position={[-4.37, .91, z]} size={[.15, 2.58, .1]} color="#763126" castShadow outline />
-      ))}
-      <Box position={[-4.35, .76, .4]} size={[.16, .075, 5.6]} color="#763126" castShadow />
-      <Box position={[-4.32, -.33, .4]} size={[.35, .11, 5.7]} color="#f5dfc4" />
-      {[[-1.65, 1.5, .13], [-.18, 1.8, -.1], [1.27, 1.43, .07]].map(([x, y, angle], index) => (
+        {[[-2.2, 1.4], [-.8, 2], [.65, 1.6], [2, 2.6], [3.15, 1.9]].map(([z, height]) => (
+          <mesh key={z} position={[-7.1, -1.35 + height / 2, z]}>
+            <boxGeometry args={[.12, height, 1.06]} />
+            <meshBasicMaterial color="#b17a69" />
+          </mesh>
+        ))}
+        {[-2.4, -.55, 1.3, 3.2].map(z => (
+          <Box key={z} position={[-4.37, .91, z]} size={[.15, 2.58, .1]} color="#763126" castShadow outline />
+        ))}
+        <Box position={[-4.35, .76, .4]} size={[.16, .075, 5.6]} color="#763126" castShadow />
+        <Box position={[-4.32, -.33, .4]} size={[.35, .11, 5.7]} color="#f5dfc4" />
+          <Box position={[-4.4, .91, -3.4]} size={[.18, 5.4, 2]} color="#a74c3c" castShadow />
+      </group>
+      {[[-2.35, 1.3, .11], [-.94, 1.47, -.12], [.53, 1.16, .07], [-.64, .43, .09]].map(([x, y, angle], index) => (
         <group key={index} position={[x, y, 3.09]} rotation={[0, 0, angle]}>
-          <Box position={[0, 0, 0]} size={[1.12, .83, .025]} color="#fff0d7" outline />
+          <Box position={[0, 0, 0]} size={[1.23, .9, .025]} color="#fff0d7" outline />
           <Box position={[0, .32, -.028]} size={[.1, .045, .03]} color="#9a382e" />
           {[-.25, .25].map(line => (
             <Box key={line} position={[line, -.03, -.025]} size={[.013, .45, .01]} color="#ab6856" />
@@ -129,9 +165,10 @@ function Room() {
           ))}
         </group>
       ))}
-      <Box position={[3.15, -.75, 2.75]} size={[2.15, 1.3, .62]} color="#8a332a" outline />
+      <Plant />
+      <Box position={[-3.08, -.75, 2.75]} size={[2.15, 1.3, .62]} color="#8a332a" outline />
       {[-.4, .05, .55].map((offset, index) => (
-        <Box key={offset} position={[3.15 + offset, .04 + index * .1, 2.72]}
+        <Box key={offset} position={[-3.08 + offset, .04 + index * .1, 2.72]}
           size={[.5, .13, .32]} color={index === 1 ? '#e6c7a8' : '#a24637'} rotation={[0, -.12, 0]} />
       ))}
     </group>
@@ -172,12 +209,12 @@ function Desk({ motion, markers, finish, reducedMotion }) {
 
   return (
     <>
-      <hemisphereLight args={['#ffe3bc', '#ad6251', 1.25]} />
-      <directionalLight position={[-8, 4.2, -3.3]} color="#ffdfac" intensity={2.55} castShadow
+      <hemisphereLight args={['#e5a995', '#722a24', .87]} />
+      <directionalLight position={[9, 4.5, -4.8]} color="#ffe2bd" intensity={2.65} castShadow
         shadow-mapSize={[1024, 1024]} shadow-camera-left={-8} shadow-camera-right={8}
         shadow-camera-top={7} shadow-camera-bottom={-7} shadow-normalBias={.025} />
       <Room />
-      <Box position={[0, 0, 0]} size={[5, .22, 3]} color={ink} castShadow outline />
+      <Box position={[0, 0, 0]} size={[5, .22, 3]} color="#9f4939" castShadow outline />
       {[-2.18, 2.18].flatMap(x => [-1.15, 1.15].map(z => (
         <Box key={x + ':' + z} position={[x, -.73, z]} size={[.18, 1.35, .18]} color="#69231c" castShadow outline />
       )))}
@@ -320,7 +357,7 @@ export default function Hero() {
         <div className="atelier-journey" ref={journey}>
           <figure className="atelier-frame">
             <div className="viewport" ref={viewport}>
-              <Canvas shadows dpr={[1, 1.5]} camera={{ position: atelierViews[0].camera, fov: 45 }}
+              <Canvas shadows dpr={[1, 1.5]} camera={{ position: atelierViews[0].camera, fov: 47 }}
                 fallback={<p className="fallback">3D önizleme için WebGL gerekir.</p>}>
                 <color attach="background" args={['#e1bba6']} />
                 <Desk motion={motion} markers={markers} finish={finish.color} reducedMotion={reducedMotion} />

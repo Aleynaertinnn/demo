@@ -1,6 +1,6 @@
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Vector3 } from 'three'
+import { Shape as Profile, Vector2, Vector3 } from 'three'
 
 const up = new Vector3(0, 1, 0)
 const paper = '#f9efd8'
@@ -70,6 +70,41 @@ function positionLimb(mesh, start, end, direction) {
   mesh.quaternion.setFromUnitVectors(up, direction.normalize())
 }
 
+function ChairBack() {
+  const silhouette = useMemo(() => {
+    const shape = new Profile()
+    shape.moveTo(-.31, -.48)
+    shape.quadraticCurveTo(-.39, -.47, -.38, -.37)
+    shape.lineTo(-.32, .34)
+    shape.quadraticCurveTo(-.32, .44, -.23, .45)
+    shape.lineTo(.23, .45)
+    shape.quadraticCurveTo(.33, .45, .33, .35)
+    shape.lineTo(.37, -.37)
+    shape.quadraticCurveTo(.37, -.48, .27, -.48)
+    shape.closePath()
+    return shape
+  }, [])
+  const shell = useMemo(() => [silhouette, { depth: .06, bevelEnabled: true, bevelSize: .025, bevelThickness: .02, bevelSegments: 2 }], [silhouette])
+
+  return (
+    <group position={[0, .04, -.44]} rotation={[.12, 0, -.055]}>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={shell} />
+        <meshToonMaterial color="#763126" />
+      </mesh>
+      <mesh position={[0, 0, -.022]} scale={[.92, .94, 1]}>
+        <shapeGeometry args={[silhouette]} />
+        <meshToonMaterial color="#dfb897" side={2} />
+      </mesh>
+    </group>
+  )
+}
+
+const torsoProfile = [
+  [.04, -.48], [.23, -.44], [.31, -.33], [.27, -.11], [.32, .13],
+  [.37, .24], [.34, .34], [.23, .4], [.12, .44], [.04, .45],
+].map(([radius, height]) => new Vector2(radius, height))
+
 function Architect({ x, skin, shirt, hair, drawingProgress, reducedMotion }) {
   const upper = useRef(null)
   const forearm = useRef(null)
@@ -105,18 +140,21 @@ function Architect({ x, skin, shirt, hair, drawingProgress, reducedMotion }) {
   return (
     <group position={[x, 0, -1.63]}>
       <Shape position={[0, -.48, -.09]} size={[.61, .09, .54]} color="#772921" />
-      <Shape position={[0, .02, -.39]} size={[.69, .85, .09]} color="#7b3027" rotation={[-.12, 0, 0]} />
-      <Shape position={[0, .04, -.445]} size={[.61, .77, .045]} color="#d6ad92" rotation={[-.12, 0, 0]} />
+      <ChairBack />
       {[-.29, .29].map(side => (
         <Shape key={side} position={[side, -.31, -.37]} size={[.055, .7, .065]} color="#602821" />
       ))}
       <Shape position={[0, -.86, -.1]} size={[.11, .71, .12]} color="#772921" />
-      <Shape position={[0, .36, -.04]} size={[.365, .54, .27]} kind="sphere" color={shirt} rotation={[.2, 0, 0]} />
-      <Shape position={[0, .85, .09]} size={[.105, .16, .11]} kind="sphere" color={skin} />
-      <Shape position={[0, 1.06, .16]} size={[.215, .25, .205]} kind="sphere" color={skin} />
-      <Shape position={[0, 1.18, .1]} size={[.225, .18, .216]} kind="sphere" color={hair} />
+      <mesh position={[0, .37, .015]} scale={[1, 1.05, .73]} rotation={[.26, 0, .08]} castShadow receiveShadow>
+        <latheGeometry args={[torsoProfile, 28]} />
+        <meshToonMaterial color={shirt} />
+      </mesh>
+      <Shape position={[.02, -.2, .22]} size={[.29, .22, .49]} kind="sphere" color="#773a30" />
+      <Shape position={[.015, .824, .172]} size={[.105, .16, .11]} kind="sphere" color={skin} />
+      <Shape position={[.035, 1.04, .24]} size={[.191, .234, .208]} rotation={[.27, 0, -.14]} kind="sphere" color={skin} />
+      <Shape position={[.017, 1.15, .182]} size={[.205, .176, .224]} kind="sphere" color={hair} />
       <Shape position={[0, 1.02, -.009]} size={[.207, .19, .09]} kind="sphere" color={hair} />
-      <Shape position={[-.025, 1.21, -.12]} size={[.135, .13, .115]} kind="sphere" color={hair} />
+      <Shape position={[-.025, 1.26, .008]} size={[.132, .125, .117]} kind="sphere" color={hair} />
       <Shape position={[0, .776, .076]} size={[.18, .075, .16]} kind="sphere" color="#e8c19e" />
       <Shape position={[0, 1.015, .354]} size={[.042, .049, .038]} kind="sphere" color={skin} />
       {[-.075, .075].map(eye => (
