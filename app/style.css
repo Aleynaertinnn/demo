@@ -22,3 +22,10 @@ button:disabled { opacity: .5; cursor: default; }
 .detail h2 { margin: 0; }
 .swatches button { display: flex; align-items: center; gap: 8px; }
 .swatches span { width: 16px; height: 16px; border: 1px solid #fff5df; }
+
+.construction { margin-top: 16px; padding: 14px 18px; border: 1px solid #23385b60; background: #f7efdb; }
+.construction-heading, .construction-labels { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.construction-heading { font-weight: 700; }
+.construction-labels, .construction-heading span { font: 600 .75rem ui-monospace, monospace; }
+.construction input { display: block; width: 100%; margin: 4px 0; min-height: 36px; accent-color: #a33e27; cursor: pointer; }
+.construction input:focus-visible { outline: 2px solid #a33e27; outline-offset: 3px; }

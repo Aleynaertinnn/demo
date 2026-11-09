@@ -20,3 +20,7 @@ Tarayıcıda http://localhost:3000 adresini aç. “Tekrar oynat” düğmesi a�
 Plan, Maket veya Malzemeler düğmesini seç. Kamera ilgili bölgeye yaklaşır ve bilgi paneli sahnenin altında açılır. Malzemeler panelindeki seçenekler maketin cephe rengini değiştirir. Genel görünüm düğmesi kamerayı geri getirir.
 
 `stops` dizisi kamera konumlarını ve içerikleri bir arada tutar. `Desk`, işaretlerin 3D konumlarını her karede ekran koordinatlarına çevirir. `Hero`, aktif durak ve cephe seçimini React state ile yönetir.
+
+## Eskizden Makete
+
+Sahnenin altındaki sürgü, kamera açısını ve üç katın yükselmesini birlikte kontrol eder. Plan ve Maket düğmeleri sürgünün iki ucuna götürür. Tamamlanan maketin panelinden cephe seçimine geçebilirsin.
