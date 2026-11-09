@@ -151,11 +151,15 @@ function Desk({ motion, markers, finish, reducedMotion }) {
 export default function Hero() {
   const viewport = useRef(null)
   const copy = useRef(null)
+  const illustration = useRef(null)
+  const inkStroke = useRef(null)
+  const pencil = useRef(null)
   const motion = useRef({ ...cameraPose(opening), build: 1 })
   const markers = useRef([])
   const cameraTween = useRef(null)
   const reducedMotion = useRef(false)
   const [take, setTake] = useState(0)
+  const [imageReady, setImageReady] = useState(false)
   const [ready, setReady] = useState(false)
   const [progress, setProgress] = useState(100)
   const [showScene, setShowScene] = useState(false)
@@ -171,20 +175,42 @@ export default function Hero() {
       return
     }
 
+    if (!imageReady) return
+
     const context = gsap.context(() => {
-      gsap.timeline({ defaults: { ease: 'power3.inOut' }, onComplete: () => setReady(true) })
+      const path = inkStroke.current
+      const length = path.getTotalLength()
+      const drawing = { distance: 0 }
+      const timeline = gsap.timeline({ defaults: { ease: 'power3.inOut' }, onComplete: () => setReady(true) })
         .fromTo(viewport.current, { clipPath: 'inset(49% 48% 49% 48%)' },
           { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.65 }, 0)
         .fromTo(motion.current, { ...cameraPose(opening), build: 1 }, { ...cameraPose(overview), build: 1, duration: 1.65 }, 0)
         .fromTo(copy.current.children, { opacity: 0, y: 14 },
           { opacity: 1, y: 0, duration: .65, stagger: .12, ease: 'power2.out' }, .55)
+
+      timeline
+        .fromTo(illustration.current, { scale: 1 },
+          { scale: 1.085, duration: 3.5, ease: 'power2.out' }, 0)
+        .set(path, { strokeDasharray: length, strokeDashoffset: length, opacity: .85 }, .7)
+        .set(pencil.current, { opacity: 1 }, .7)
+        .to(drawing, {
+          distance: length,
+          duration: 2.55,
+          ease: 'none',
+          onUpdate: () => {
+            path.style.strokeDashoffset = length - drawing.distance
+            const point = path.getPointAtLength(drawing.distance)
+            pencil.current.setAttribute('transform', `translate(${point.x} ${point.y})`)
+          },
+        }, .7)
+        .to(pencil.current, { opacity: 0, duration: .24 }, 3.25)
     })
 
     return () => {
       cameraTween.current?.kill()
       context.revert()
     }
-  }, [take])
+  }, [take, imageReady])
 
   function selectStop(stop) {
     setShowScene(true)
@@ -234,17 +260,26 @@ export default function Hero() {
         </div>
         <figure>
           <div className="viewport" ref={viewport}>
-            <Canvas dpr={[1, 1.5]} camera={{ position: [5.6, 4.4, 7], fov: 43 }}
+            {showScene && <Canvas dpr={[1, 1.5]} camera={{ position: [5.6, 4.4, 7], fov: 43 }}
               fallback={<p className="fallback">3D önizleme için WebGL gerekir.</p>}>
               <color attach="background" args={['#e1bba6']} />
               <Desk motion={motion} markers={markers} finish={finish.color} reducedMotion={reducedMotion} />
-            </Canvas>
-            {!showScene && (
-              <div className="atelier-cover">
+            </Canvas>}
+            <div className="atelier-cover" hidden={showScene}>
+              <div className="atelier-art" ref={illustration}>
                 <Image src="/atolye-kirmizi.webp" alt="Kırmızı mürekkeple çizilmiş atölyede iki mimar, kâğıt paftalar üzerinde çalışıyor."
-                  fill sizes="(max-width: 1440px) 90vw, 1284px" preload />
+                  fill sizes="(max-width: 1440px) 90vw, 1284px" preload
+                  onLoad={() => setImageReady(true)} onError={() => setImageReady(true)} />
+                <svg className="atelier-ink" viewBox="0 0 2172 724" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                  <path ref={inkStroke} d="M1134 465 L1175 438 L1256 439 L1223 465 L1184 465 L1166 480 L1221 482 L1245 463" />
+                  <g ref={pencil} className="atelier-pencil">
+                    <path d="M0 0 L10 -17 L35 -45 L40 -41 L15 -13 Z" fill="#842d21" />
+                    <path d="M0 0 L10 -17 L15 -13 Z" fill="#e8b487" />
+                    <path d="M0 0 L4 -7 L6 -5 Z" fill="#48201b" />
+                  </g>
+                </svg>
               </div>
-            )}
+            </div>
             {ready && showScene && stops.map((stop, index) => (
               <button className="hotspot" key={stop.id} ref={node => { markers.current[index] = node }}
                 aria-label={stop.title} aria-pressed={active?.id === stop.id}
@@ -254,7 +289,7 @@ export default function Hero() {
           <figcaption><span>ŞEKİL 01 — ÇALIŞMA MASASI</span>
             <div className="scene-actions">
               {showScene
-                ? <button onClick={() => setShowScene(false)}>İllüstrasyona dön</button>
+                ? <button onClick={() => setShowScene(false)}>Çizime dön</button>
                 : <button disabled={!ready} onClick={() => selectStop(null)}>3D masayı keşfet</button>}
               <button onClick={replay}>↻ &nbsp;Tekrar oynat</button>
             </div>

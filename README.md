@@ -30,3 +30,5 @@ Sahnenin altındaki sürgü, kamera açısını ve üç katın yükselmesini bir
 Genel görünümde iki mimarı ve plan, eskiz ile cephe çizimlerini görebilirsin. İlk mimarın kalemi ilerlerken plan çizgileri belirir. Diğer mimar cephe paftası üzerinde çalışır. Karakterler ve kâğıtlar `app/architects.jsx` içinde Three.js geometrileriyle oluşturulur.
 
 Açılıştaki kırmızı atölye illüstrasyonu `public/atolye-kirmizi.webp` dosyasında. **3D masayı keşfet** düğmesi canlı sahneyi gösterir. Plan, Maket, Malzemeler ve sürgü de doğrudan canlı sahneye geçer.
+
+Açılış animasyonunda GSAP illüstrasyonu hafifçe yakınlaştırır. İllüstrasyonla aynı kadrajdaki SVG katmanı, kalemi plan çizgisi boyunca hareket ettirir. **Tekrar oynat** animasyonu baştan başlatır.
