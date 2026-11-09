@@ -5,7 +5,6 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { gsap } from 'gsap'
 import { MathUtils, Vector3 } from 'three'
 import Architects from './architects'
-import Image from 'next/image'
 
 const stops = [
   { id: 'plan', number: '01', title: 'Plan', point: [-.88, .23, .68],
@@ -26,7 +25,22 @@ const materials = [
 ]
 
 const overview = { camera: [2.7, 3.5, 5.7], target: [0, .52, -.55] }
-const opening = { camera: [5.6, 4.4, 7], target: overview.target }
+const atelierViews = [
+  { camera: [3.7, 2.35, -7.8], target: [0, .58, .2] },
+  { camera: [.9, 2.05, -4.6], target: [-.52, .46, -.3] },
+  { camera: [-.26, 2.15, -2.8], target: [-1.13, .2, -.54] },
+]
+
+function atelierPose(progress) {
+  const index = progress < .5 ? 0 : 1
+  const amount = MathUtils.smoothstep(progress * 2 - index, 0, 1)
+  const start = cameraPose(atelierViews[index])
+  const end = cameraPose(atelierViews[index + 1])
+  return {
+    ...Object.fromEntries(Object.keys(start).map(key => [key, MathUtils.lerp(start[key], end[key], amount)])),
+    build: 0,
+  }
+}
 
 function cameraPose({ camera, target }) {
   return { x: camera[0], y: camera[1], z: camera[2], tx: target[0], ty: target[1], tz: target[2] }
@@ -58,6 +72,44 @@ function Box({ position, size, color, rotation }) {
       <boxGeometry args={size} />
       <meshToonMaterial color={color} />
     </mesh>
+  )
+}
+
+function Room() {
+  return (
+    <group>
+      <Box position={[0, -1.46, 0]} size={[13, .12, 20]} color="#d8ae98" />
+      {Array.from({ length: 19 }, (_, index) => (
+        <Box key={index} position={[-6 + index * .66, -1.397, 0]} size={[.012, .004, 18]} color="#b77e6b" />
+      ))}
+      <Box position={[0, 1.25, 3.2]} size={[12, 5.35, .16]} color="#efdbc4" />
+      <Box position={[0, -1.22, 3.08]} size={[12, .28, .08]} color="#9c3c31" />
+      <Box position={[-4.4, -.88, .4]} size={[.18, 1.04, 5.6]} color="#9b4135" />
+      <Box position={[-4.4, 2.8, .4]} size={[.18, 1.3, 5.6]} color="#edceb4" />
+      <Box position={[-4.52, .91, .4]} size={[.06, 2.53, 5.6]} color="#f8d9b5" />
+      {[-2.4, -.55, 1.3, 3.2].map(z => (
+        <Box key={z} position={[-4.37, .91, z]} size={[.15, 2.58, .1]} color="#86372b" />
+      ))}
+      <Box position={[-4.35, .76, .4]} size={[.16, .075, 5.6]} color="#86372b" />
+      <Box position={[-4.32, -.33, .4]} size={[.35, .11, 5.7]} color="#f5dfc4" />
+      {[[-1.65, 1.5, .13], [-.18, 1.8, -.1], [1.27, 1.43, .07]].map(([x, y, angle], index) => (
+        <group key={index} position={[x, y, 3.09]} rotation={[0, 0, angle]}>
+          <Box position={[0, 0, 0]} size={[1.12, .83, .025]} color="#fff0d7" />
+          <Box position={[0, .32, -.028]} size={[.1, .045, .03]} color="#9a382e" />
+          {[-.25, .25].map(line => (
+            <Box key={line} position={[line, -.03, -.025]} size={[.013, .45, .01]} color="#ab6856" />
+          ))}
+          {[-.25, .18].map(line => (
+            <Box key={line} position={[0, line, -.025]} size={[.51, .013, .01]} color="#ab6856" />
+          ))}
+        </group>
+      ))}
+      <Box position={[3.15, -.75, 2.75]} size={[2.15, 1.3, .62]} color="#8a332a" />
+      {[-.4, .05, .55].map((offset, index) => (
+        <Box key={offset} position={[3.15 + offset, .04 + index * .1, 2.72]}
+          size={[.5, .13, .32]} color={index === 1 ? '#e6c7a8' : '#a24637'} rotation={[0, -.12, 0]} />
+      ))}
+    </group>
   )
 }
 
@@ -97,7 +149,7 @@ function Desk({ motion, markers, finish, reducedMotion }) {
     <>
       <ambientLight intensity={1.4} />
       <directionalLight position={[-3, 7, 5]} intensity={2.5} />
-      <Box position={[0, -1.46, 0]} size={[22, .12, 22]} color="#e1bba6" />
+      <Room />
       <Box position={[0, 0, 0]} size={[5, .22, 3]} color={ink} />
       {[-2.18, 2.18].flatMap(x => [-1.15, 1.15].map(z => (
         <Box key={x + ':' + z} position={[x, -.73, z]} size={[.18, 1.35, .18]} color="#69231c" />
@@ -150,70 +202,44 @@ function Desk({ motion, markers, finish, reducedMotion }) {
 
 export default function Hero() {
   const viewport = useRef(null)
-  const copy = useRef(null)
-  const illustration = useRef(null)
-  const inkStroke = useRef(null)
-  const pencil = useRef(null)
-  const motion = useRef({ ...cameraPose(opening), build: 1 })
+  const journey = useRef(null)
+  const exploring = useRef(false)
+  const motion = useRef(atelierPose(0))
   const markers = useRef([])
   const cameraTween = useRef(null)
   const reducedMotion = useRef(false)
   const [take, setTake] = useState(0)
-  const [imageReady, setImageReady] = useState(false)
   const [ready, setReady] = useState(false)
-  const [progress, setProgress] = useState(100)
-  const [showScene, setShowScene] = useState(false)
+  const [progress, setProgress] = useState(0)
   const [active, setActive] = useState(null)
   const [finish, setFinish] = useState(materials[0])
 
   useLayoutEffect(() => {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    reducedMotion.current = reduceMotion
-    if (reduceMotion) {
-      Object.assign(motion.current, cameraPose(overview), { build: 1 })
-      setReady(true)
-      return
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    function updateJourney() {
+      if (exploring.current) return
+      const track = journey.current
+      const distance = track.offsetHeight - viewport.current.parentElement.offsetHeight
+      const progress = MathUtils.clamp(-track.getBoundingClientRect().top / Math.max(distance, 1), 0, 1)
+      reducedMotion.current = preference.matches
+      Object.assign(motion.current, atelierPose(preference.matches ? 1 : progress))
     }
 
-    if (!imageReady) return
-
-    const context = gsap.context(() => {
-      const path = inkStroke.current
-      const length = path.getTotalLength()
-      const drawing = { distance: 0 }
-      const timeline = gsap.timeline({ defaults: { ease: 'power3.inOut' }, onComplete: () => setReady(true) })
-        .fromTo(viewport.current, { clipPath: 'inset(49% 48% 49% 48%)' },
-          { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.65 }, 0)
-        .fromTo(motion.current, { ...cameraPose(opening), build: 1 }, { ...cameraPose(overview), build: 1, duration: 1.65 }, 0)
-        .fromTo(copy.current.children, { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, duration: .65, stagger: .12, ease: 'power2.out' }, .55)
-
-      timeline
-        .fromTo(illustration.current, { scale: 1 },
-          { scale: 1.085, duration: 3.5, ease: 'power2.out' }, 0)
-        .set(path, { strokeDasharray: length, strokeDashoffset: length, opacity: .85 }, .7)
-        .set(pencil.current, { opacity: 1 }, .7)
-        .to(drawing, {
-          distance: length,
-          duration: 2.55,
-          ease: 'none',
-          onUpdate: () => {
-            path.style.strokeDashoffset = length - drawing.distance
-            const point = path.getPointAtLength(drawing.distance)
-            pencil.current.setAttribute('transform', `translate(${point.x} ${point.y})`)
-          },
-        }, .7)
-        .to(pencil.current, { opacity: 0, duration: .24 }, 3.25)
-    })
-
+    updateJourney()
+    setReady(true)
+    window.addEventListener('scroll', updateJourney, { passive: true })
+    window.addEventListener('resize', updateJourney)
+    preference.addEventListener('change', updateJourney)
     return () => {
+      window.removeEventListener('scroll', updateJourney)
+      window.removeEventListener('resize', updateJourney)
+      preference.removeEventListener('change', updateJourney)
       cameraTween.current?.kill()
-      context.revert()
     }
-  }, [take, imageReady])
+  }, [take])
 
   function selectStop(stop) {
-    setShowScene(true)
+    exploring.current = true
     setActive(stop)
     cameraTween.current?.kill()
     const value = stop === planStop ? 0 : 1
@@ -232,7 +258,7 @@ export default function Hero() {
   }
 
   function scrub(event) {
-    setShowScene(true)
+    exploring.current = true
     const value = Number(event.target.value)
     cameraTween.current?.kill()
     Object.assign(motion.current, constructionPose(value / 100))
@@ -241,11 +267,11 @@ export default function Hero() {
   }
 
   function replay() {
-    setShowScene(false)
     cameraTween.current?.kill()
-    setReady(false)
-    setProgress(100)
+    exploring.current = false
+    setProgress(0)
     setActive(null)
+    window.scrollTo({ top: 0, behavior: 'instant' })
     setTake(value => value + 1)
   }
 
@@ -253,48 +279,30 @@ export default function Hero() {
     <main>
       <header><span>▦ &nbsp; KÂĞIT ATÖLYESİ</span><span>HAREKET ÇALIŞMASI / 01</span></header>
       <section>
-        <div className="intro" ref={copy}>
+        <div className="intro">
           <p className="index">01 / MİMARİ ESKİZ</p>
           <h1>Bir çizgiden<br />bir mekâna.</h1>
           <p>Mimarların çizimlerini izle, planın makete dönüşümünü keşfet.</p>
         </div>
-        <figure>
-          <div className="viewport" ref={viewport}>
-            {showScene && <Canvas dpr={[1, 1.5]} camera={{ position: [5.6, 4.4, 7], fov: 43 }}
-              fallback={<p className="fallback">3D önizleme için WebGL gerekir.</p>}>
-              <color attach="background" args={['#e1bba6']} />
-              <Desk motion={motion} markers={markers} finish={finish.color} reducedMotion={reducedMotion} />
-            </Canvas>}
-            <div className="atelier-cover" hidden={showScene}>
-              <div className="atelier-art" ref={illustration}>
-                <Image src="/atolye-kirmizi.webp" alt="Kırmızı mürekkeple çizilmiş atölyede iki mimar, kâğıt paftalar üzerinde çalışıyor."
-                  fill sizes="(max-width: 1440px) 90vw, 1284px" preload
-                  onLoad={() => setImageReady(true)} onError={() => setImageReady(true)} />
-                <svg className="atelier-ink" viewBox="0 0 2172 724" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                  <path ref={inkStroke} d="M1134 465 L1175 438 L1256 439 L1223 465 L1184 465 L1166 480 L1221 482 L1245 463" />
-                  <g ref={pencil} className="atelier-pencil">
-                    <path d="M0 0 L10 -17 L35 -45 L40 -41 L15 -13 Z" fill="#842d21" />
-                    <path d="M0 0 L10 -17 L15 -13 Z" fill="#e8b487" />
-                    <path d="M0 0 L4 -7 L6 -5 Z" fill="#48201b" />
-                  </g>
-                </svg>
-              </div>
+        <div className="atelier-journey" ref={journey}>
+          <figure className="atelier-frame">
+            <div className="viewport" ref={viewport}>
+              <Canvas dpr={[1, 1.5]} camera={{ position: atelierViews[0].camera, fov: 48 }}
+                fallback={<p className="fallback">3D önizleme için WebGL gerekir.</p>}>
+                <color attach="background" args={['#e1bba6']} />
+                <Desk motion={motion} markers={markers} finish={finish.color} reducedMotion={reducedMotion} />
+              </Canvas>
+              {ready && active && stops.map((stop, index) => (
+                <button className="hotspot" key={stop.id} ref={node => { markers.current[index] = node }}
+                  aria-label={stop.title} aria-pressed={active.id === stop.id}
+                  onClick={() => selectStop(stop)}>{stop.number}</button>
+              ))}
             </div>
-            {ready && showScene && stops.map((stop, index) => (
-              <button className="hotspot" key={stop.id} ref={node => { markers.current[index] = node }}
-                aria-label={stop.title} aria-pressed={active?.id === stop.id}
-                onClick={() => selectStop(stop)}>{stop.number}</button>
-            ))}
-          </div>
-          <figcaption><span>ŞEKİL 01 — ÇALIŞMA MASASI</span>
-            <div className="scene-actions">
-              {showScene
-                ? <button onClick={() => setShowScene(false)}>Çizime dön</button>
-                : <button disabled={!ready} onClick={() => selectStop(null)}>3D masayı keşfet</button>}
-              <button onClick={replay}>↻ &nbsp;Tekrar oynat</button>
-            </div>
-          </figcaption>
-        </figure>
+            <figcaption><span>01 / ATÖLYE · MASAYA YAKLAŞMAK İÇİN KAYDIR</span>
+              <button onClick={replay}>↻ &nbsp;Başa dön</button>
+            </figcaption>
+          </figure>
+        </div>
         <div className="construction">
           <div className="construction-heading">
             <label htmlFor="construction-progress">Eskizden Makete</label>

@@ -40,3 +40,7 @@ button:disabled { opacity: .5; cursor: default; }
 .atelier-ink { pointer-events: none; }
 .atelier-ink > path { fill: none; stroke: #8b392a; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
 .atelier-pencil { opacity: 0; }
+
+.atelier-journey { height: 175svh; }
+.atelier-frame { position: sticky; top: 12px; }
+.atelier-frame .viewport { height: clamp(280px, 67svh, 720px); }

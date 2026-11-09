@@ -70,7 +70,7 @@ function positionLimb(mesh, start, end, direction) {
   mesh.quaternion.setFromUnitVectors(up, direction.normalize())
 }
 
-function Architect({ x, skin, shirt, hair, drawingProgress, reducedMotion, reviewing = false }) {
+function Architect({ x, skin, shirt, hair, drawingProgress, reducedMotion }) {
   const upper = useRef(null)
   const forearm = useRef(null)
   const hand = useRef(null)
@@ -92,9 +92,7 @@ function Architect({ x, skin, shirt, hair, drawingProgress, reducedMotion, revie
     const [startX, startZ] = drawing[index]
     const [endX, endZ] = drawing[index + 1]
     const phase = progress - index
-    const reviewMotion = reducedMotion.current ? 0 : Math.sin(clock.elapsedTime * .8) * .14
-    tip.set(reviewing ? -.18 + reviewMotion : startX + (endX - startX) * phase, .233,
-      .92 + (reviewing ? .1 : startZ + (endZ - startZ) * phase))
+    tip.set(startX + (endX - startX) * phase, .233, .92 + startZ + (endZ - startZ) * phase)
     hand.current.position.copy(tip)
     hand.current.position.y += .075
     elbow.set(.36, .37, .54)
@@ -137,8 +135,7 @@ export default function Architects({ reducedMotion }) {
       <Sheet position={[1.39, .211, .57]} angle={.24} points={drawing} />
       <Architect x={-1.35} skin="#c98a6c" shirt="#a33b30" hair="#4c241f"
         drawingProgress={progress} reducedMotion={reducedMotion} />
-      <Architect x={1.35} skin="#e1ad87" shirt="#ba5b48" hair="#543e36"
-        reviewing reducedMotion={reducedMotion} />
+
     </>
   )
 }
