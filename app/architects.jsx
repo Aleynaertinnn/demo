@@ -18,7 +18,7 @@ const elevation = [
 
 function Shape({ position, size, color, kind = 'box', rotation }) {
   return (
-    <mesh position={position} rotation={rotation} scale={kind === 'sphere' ? size : undefined}>
+    <mesh castShadow receiveShadow position={position} rotation={rotation} scale={kind === 'sphere' ? size : undefined}>
       {kind === 'sphere'
         ? <sphereGeometry args={[1, 18, 12]} />
         : <boxGeometry args={size} />}
@@ -105,22 +105,29 @@ function Architect({ x, skin, shirt, hair, drawingProgress, reducedMotion }) {
   return (
     <group position={[x, 0, -1.63]}>
       <Shape position={[0, -.48, -.09]} size={[.61, .09, .54]} color="#772921" />
+      <Shape position={[0, .02, -.39]} size={[.69, .85, .09]} color="#7b3027" rotation={[-.12, 0, 0]} />
+      <Shape position={[0, .04, -.445]} size={[.61, .77, .045]} color="#d6ad92" rotation={[-.12, 0, 0]} />
+      {[-.29, .29].map(side => (
+        <Shape key={side} position={[side, -.31, -.37]} size={[.055, .7, .065]} color="#602821" />
+      ))}
       <Shape position={[0, -.86, -.1]} size={[.11, .71, .12]} color="#772921" />
-      <Shape position={[0, .36, -.04]} size={[.37, .54, .23]} kind="sphere" color={shirt} rotation={[.2, 0, 0]} />
+      <Shape position={[0, .36, -.04]} size={[.365, .54, .27]} kind="sphere" color={shirt} rotation={[.2, 0, 0]} />
       <Shape position={[0, .85, .09]} size={[.105, .16, .11]} kind="sphere" color={skin} />
       <Shape position={[0, 1.06, .16]} size={[.215, .25, .205]} kind="sphere" color={skin} />
       <Shape position={[0, 1.18, .1]} size={[.225, .18, .216]} kind="sphere" color={hair} />
       <Shape position={[0, 1.02, -.009]} size={[.207, .19, .09]} kind="sphere" color={hair} />
+      <Shape position={[-.025, 1.21, -.12]} size={[.135, .13, .115]} kind="sphere" color={hair} />
+      <Shape position={[0, .776, .076]} size={[.18, .075, .16]} kind="sphere" color="#e8c19e" />
       <Shape position={[0, 1.015, .354]} size={[.042, .049, .038]} kind="sphere" color={skin} />
       {[-.075, .075].map(eye => (
         <Shape key={eye} position={[eye, 1.068, .35]} size={[.018, .016, .009]} kind="sphere" color="#4c241f" />
       ))}
       <Shape position={[-.27, .44, .23]} size={[.16, .65, .15]} color={shirt} rotation={[.48, 0, -.13]} />
       <Shape position={[-.3, .21, .48]} size={[.087, .069, .16]} kind="sphere" color={skin} />
-      <mesh ref={upper}><cylinderGeometry args={[.108, .12, 1, 12]} /><meshToonMaterial color={shirt} /></mesh>
-      <mesh ref={forearm}><cylinderGeometry args={[.068, .087, 1, 12]} /><meshToonMaterial color={skin} /></mesh>
+      <mesh ref={upper} castShadow><cylinderGeometry args={[.108, .12, 1, 12]} /><meshToonMaterial color={shirt} /></mesh>
+      <mesh ref={forearm} castShadow><cylinderGeometry args={[.068, .087, 1, 12]} /><meshToonMaterial color={skin} /></mesh>
       <mesh ref={hand} scale={[.075, .058, .083]}><sphereGeometry args={[1, 12, 8]} /><meshToonMaterial color={skin} /></mesh>
-      <mesh ref={pencil}><cylinderGeometry args={[.014, .014, .18, 8]} /><meshToonMaterial color={reviewing ? '#8b2920' : '#cb5338'} /></mesh>
+      <mesh ref={pencil}><cylinderGeometry args={[.014, .014, .18, 8]} /><meshToonMaterial color="#a53b2d" /></mesh>
     </group>
   )
 }
@@ -133,7 +140,7 @@ export default function Architects({ reducedMotion }) {
       <Sheet position={[-1.35, .215, -.71]} angle={0} points={drawing} drawingProgress={progress} />
       <Sheet position={[1.35, .215, -.71]} angle={-.08} points={elevation} />
       <Sheet position={[1.39, .211, .57]} angle={.24} points={drawing} />
-      <Architect x={-1.35} skin="#c98a6c" shirt="#a33b30" hair="#4c241f"
+      <Architect x={-1.35} skin="#c98a6c" shirt="#ab5141" hair="#602b24"
         drawingProgress={progress} reducedMotion={reducedMotion} />
 
     </>

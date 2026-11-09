@@ -30,17 +30,22 @@ button:disabled { opacity: .5; cursor: default; }
 .construction input { display: block; width: 100%; margin: 4px 0; min-height: 36px; accent-color: #a33e27; cursor: pointer; }
 .construction input:focus-visible { outline: 2px solid #a33e27; outline-offset: 3px; }
 
-.atelier-cover { position: absolute; inset: 0; overflow: hidden; background: #e1bba6; }
-.atelier-cover img { object-fit: cover; object-position: 54% center; }
-.scene-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
-
-.atelier-art, .atelier-ink { position: absolute; inset: 0; width: 100%; height: 100%; }
-.atelier-art { transform-origin: 54% 63%; }
-.atelier-cover img { object-position: center; }
-.atelier-ink { pointer-events: none; }
-.atelier-ink > path { fill: none; stroke: #8b392a; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
-.atelier-pencil { opacity: 0; }
-
 .atelier-journey { height: 175svh; }
 .atelier-frame { position: sticky; top: 12px; }
 .atelier-frame .viewport { height: clamp(280px, 67svh, 720px); }
+
+
+.atelier-frame .viewport {
+  overflow: hidden;
+  border: 1px solid #8d4939;
+  box-shadow: 0 0 0 5px #f3ead7, 0 0 0 6px #8d493947;
+}
+
+.atelier-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .21;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath d='M0 0h140v140H0z' filter='url(%23g)' opacity='.42'/%3E%3C/svg%3E");
+}
