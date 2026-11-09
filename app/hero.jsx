@@ -5,6 +5,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { gsap } from 'gsap'
 import { MathUtils, Vector3 } from 'three'
 import Architects from './architects'
+import Image from 'next/image'
 
 const stops = [
   { id: 'plan', number: '01', title: 'Plan', point: [-.88, .23, .68],
@@ -47,7 +48,7 @@ function constructionPose(progress) {
   }
 }
 
-const ink = '#294ea5'
+const ink = '#a13025'
 const paper = '#e8d8b6'
 const white = '#f7efdb'
 
@@ -96,19 +97,19 @@ function Desk({ motion, markers, finish, reducedMotion }) {
     <>
       <ambientLight intensity={1.4} />
       <directionalLight position={[-3, 7, 5]} intensity={2.5} />
-      <Box position={[0, -1.46, 0]} size={[22, .12, 22]} color="#aab8d9" />
+      <Box position={[0, -1.46, 0]} size={[22, .12, 22]} color="#e1bba6" />
       <Box position={[0, 0, 0]} size={[5, .22, 3]} color={ink} />
       {[-2.18, 2.18].flatMap(x => [-1.15, 1.15].map(z => (
-        <Box key={x + ':' + z} position={[x, -.73, z]} size={[.18, 1.35, .18]} color="#18356d" />
+        <Box key={x + ':' + z} position={[x, -.73, z]} size={[.18, 1.35, .18]} color="#69231c" />
       )))}
       <group rotation={[0, .16, 0]}>
         <Box position={[.12, .14, .13]} size={[3.42, .06, 2.12]} color={paper} />
         <Box position={[.2, .18, .06]} size={[3.25, .025, 2]} color={white} />
         {Array.from({ length: 14 }, (_, i) => (
-          <Box key={i} position={[-1.3 + i * .225, .195, .06]} size={[.009, .002, 1.9]} color="#9cafd0" />
+          <Box key={i} position={[-1.3 + i * .225, .195, .06]} size={[.009, .002, 1.9]} color="#bf8e7a" />
         ))}
         {Array.from({ length: 9 }, (_, i) => (
-          <Box key={i} position={[.2, .196, -.84 + i * .225]} size={[3.1, .002, .009]} color="#9cafd0" />
+          <Box key={i} position={[.2, .196, -.84 + i * .225]} size={[3.1, .002, .009]} color="#bf8e7a" />
         ))}
         <Box position={[-1.02, .202, .65]} size={[.76, .008, .55]} color="#e8d8b6" />
         {[-1.36, -.69].map(x => (
@@ -157,6 +158,7 @@ export default function Hero() {
   const [take, setTake] = useState(0)
   const [ready, setReady] = useState(false)
   const [progress, setProgress] = useState(100)
+  const [showScene, setShowScene] = useState(false)
   const [active, setActive] = useState(null)
   const [finish, setFinish] = useState(materials[0])
 
@@ -185,6 +187,7 @@ export default function Hero() {
   }, [take])
 
   function selectStop(stop) {
+    setShowScene(true)
     setActive(stop)
     cameraTween.current?.kill()
     const value = stop === planStop ? 0 : 1
@@ -203,6 +206,7 @@ export default function Hero() {
   }
 
   function scrub(event) {
+    setShowScene(true)
     const value = Number(event.target.value)
     cameraTween.current?.kill()
     Object.assign(motion.current, constructionPose(value / 100))
@@ -211,6 +215,7 @@ export default function Hero() {
   }
 
   function replay() {
+    setShowScene(false)
     cameraTween.current?.kill()
     setReady(false)
     setProgress(100)
@@ -231,17 +236,28 @@ export default function Hero() {
           <div className="viewport" ref={viewport}>
             <Canvas dpr={[1, 1.5]} camera={{ position: [5.6, 4.4, 7], fov: 43 }}
               fallback={<p className="fallback">3D önizleme için WebGL gerekir.</p>}>
-              <color attach="background" args={['#aab8d9']} />
+              <color attach="background" args={['#e1bba6']} />
               <Desk motion={motion} markers={markers} finish={finish.color} reducedMotion={reducedMotion} />
             </Canvas>
-            {ready && stops.map((stop, index) => (
+            {!showScene && (
+              <div className="atelier-cover">
+                <Image src="/atolye-kirmizi.webp" alt="Kırmızı mürekkeple çizilmiş atölyede iki mimar, kâğıt paftalar üzerinde çalışıyor."
+                  fill sizes="(max-width: 1440px) 90vw, 1284px" preload />
+              </div>
+            )}
+            {ready && showScene && stops.map((stop, index) => (
               <button className="hotspot" key={stop.id} ref={node => { markers.current[index] = node }}
                 aria-label={stop.title} aria-pressed={active?.id === stop.id}
                 onClick={() => selectStop(stop)}>{stop.number}</button>
             ))}
           </div>
           <figcaption><span>ŞEKİL 01 — ÇALIŞMA MASASI</span>
-            <button onClick={replay}>↻ &nbsp;Tekrar oynat</button>
+            <div className="scene-actions">
+              {showScene
+                ? <button onClick={() => setShowScene(false)}>İllüstrasyona dön</button>
+                : <button disabled={!ready} onClick={() => selectStop(null)}>3D masayı keşfet</button>}
+              <button onClick={replay}>↻ &nbsp;Tekrar oynat</button>
+            </div>
           </figcaption>
         </figure>
         <div className="construction">

@@ -4,7 +4,7 @@ import { Vector3 } from 'three'
 
 const up = new Vector3(0, 1, 0)
 const paper = '#f9efd8'
-const ink = '#29477c'
+const ink = '#8b2920'
 const drawing = [
   [-.38, -.27], [.38, -.27], [.38, .27], [-.38, .27], [-.38, -.27],
   [-.02, -.27], [-.02, .04], [.38, .04], [.38, .27], [.14, .27],
@@ -106,8 +106,8 @@ function Architect({ x, skin, shirt, hair, drawingProgress, reducedMotion, revie
 
   return (
     <group position={[x, 0, -1.63]}>
-      <Shape position={[0, -.48, -.09]} size={[.61, .09, .54]} color="#223c74" />
-      <Shape position={[0, -.86, -.1]} size={[.11, .71, .12]} color="#223c74" />
+      <Shape position={[0, -.48, -.09]} size={[.61, .09, .54]} color="#772921" />
+      <Shape position={[0, -.86, -.1]} size={[.11, .71, .12]} color="#772921" />
       <Shape position={[0, .36, -.04]} size={[.37, .54, .23]} kind="sphere" color={shirt} rotation={[.2, 0, 0]} />
       <Shape position={[0, .85, .09]} size={[.105, .16, .11]} kind="sphere" color={skin} />
       <Shape position={[0, 1.06, .16]} size={[.215, .25, .205]} kind="sphere" color={skin} />
@@ -115,14 +115,14 @@ function Architect({ x, skin, shirt, hair, drawingProgress, reducedMotion, revie
       <Shape position={[0, 1.02, -.009]} size={[.207, .19, .09]} kind="sphere" color={hair} />
       <Shape position={[0, 1.015, .354]} size={[.042, .049, .038]} kind="sphere" color={skin} />
       {[-.075, .075].map(eye => (
-        <Shape key={eye} position={[eye, 1.068, .35]} size={[.018, .016, .009]} kind="sphere" color="#263449" />
+        <Shape key={eye} position={[eye, 1.068, .35]} size={[.018, .016, .009]} kind="sphere" color="#4c241f" />
       ))}
       <Shape position={[-.27, .44, .23]} size={[.16, .65, .15]} color={shirt} rotation={[.48, 0, -.13]} />
       <Shape position={[-.3, .21, .48]} size={[.087, .069, .16]} kind="sphere" color={skin} />
       <mesh ref={upper}><cylinderGeometry args={[.108, .12, 1, 12]} /><meshToonMaterial color={shirt} /></mesh>
       <mesh ref={forearm}><cylinderGeometry args={[.068, .087, 1, 12]} /><meshToonMaterial color={skin} /></mesh>
       <mesh ref={hand} scale={[.075, .058, .083]}><sphereGeometry args={[1, 12, 8]} /><meshToonMaterial color={skin} /></mesh>
-      <mesh ref={pencil}><cylinderGeometry args={[.014, .014, .18, 8]} /><meshToonMaterial color={reviewing ? '#29477c' : '#cb5338'} /></mesh>
+      <mesh ref={pencil}><cylinderGeometry args={[.014, .014, .18, 8]} /><meshToonMaterial color={reviewing ? '#8b2920' : '#cb5338'} /></mesh>
     </group>
   )
 }
@@ -135,7 +135,7 @@ export default function Architects({ reducedMotion }) {
       <Sheet position={[-1.35, .215, -.71]} angle={0} points={drawing} drawingProgress={progress} />
       <Sheet position={[1.35, .215, -.71]} angle={-.08} points={elevation} />
       <Sheet position={[1.39, .211, .57]} angle={.24} points={drawing} />
-      <Architect x={-1.35} skin="#c98a6c" shirt="#2e559b" hair="#273044"
+      <Architect x={-1.35} skin="#c98a6c" shirt="#a33b30" hair="#4c241f"
         drawingProgress={progress} reducedMotion={reducedMotion} />
       <Architect x={1.35} skin="#e1ad87" shirt="#ba5b48" hair="#543e36"
         reviewing reducedMotion={reducedMotion} />
