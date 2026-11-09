@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { gsap } from 'gsap'
 import { BoxGeometry, EdgesGeometry, MathUtils, Vector3 } from 'three'
-import Architects from './architects'
+import DraftingSheets from './drafting-sheets'
 
 const stops = [
   { id: 'plan', number: '01', title: 'Plan', point: [-.88, .23, .68],
@@ -26,9 +26,9 @@ const materials = [
 
 const overview = { camera: [2.7, 3.5, 5.7], target: [0, .52, -.55] }
 const atelierViews = [
-  { camera: [-.82, 1.02, -5.35], target: [-1.63, .6, .25] },
-  { camera: [-.48, 1.6, -3.72], target: [-1.16, .4, -.4] },
-  { camera: [.16, 2.58, -2.35], target: [-1.2, .22, -.55] },
+  { camera: [-1.2, 1.72, -5.95], target: [.02, .15, .19] },
+  { camera: [-1.62, 2.07, -3.62], target: [-.46, .19, -.16] },
+  { camera: [-.68, 2.65, -1.75], target: [-.56, .22, -.28] },
 ]
 
 function atelierPose(progress) {
@@ -125,12 +125,12 @@ function Plant() {
 function Room() {
   return (
     <group>
-      <Box position={[0, -1.46, 0]} size={[13, .12, 20]} color="#d6a88c" />
+      <Box position={[0, -1.46, 0]} size={[13, .12, 20]} color="#c49175" />
       {Array.from({ length: 19 }, (_, index) => (
         <Box key={index} position={[-6 + index * .66, -1.397, 0]} size={[.012, .004, 18]} color="#b77e6b" />
       ))}
-      <Box position={[0, 1.55, 3.2]} size={[22, 6, .16]} color="#ecd2b7" />
-      <Box position={[-4.75, 1.58, -.38]} size={[.16, 6, 7.25]} color="#a74c3c" />
+      <Box position={[0, 1.55, 3.2]} size={[22, 6, .16]} color="#e6bb96" />
+      <Box position={[-4.75, 1.58, -.38]} size={[.16, 6, 7.25]} color="#a05b4e" />
       <Box position={[0, 4.15, -.24]} size={[12, .18, 8]} color="#c48970" />
       <Box position={[0, -1.22, 3.08]} size={[12, .28, .08]} color="#9c3c31" />
       <group position={[-1.3, 0, 0]} scale={[-1, 1, 1]}>
@@ -138,12 +138,16 @@ function Room() {
         <Box position={[-4.4, 2.8, .4]} size={[.18, 1.3, 5.6]} color="#e3ba9b" castShadow />
         <mesh position={[-7.4, .9, .8]} rotation={[0, Math.PI / 2, 0]}>
           <planeGeometry args={[12, 6]} />
-          <meshBasicMaterial color="#edc5a7" />
+          <meshBasicMaterial color="#d68565" />
+        </mesh>
+        <mesh position={[-7.32, .9, -1.05]} rotation={[0, Math.PI / 2, 0]}>
+          <circleGeometry args={[.46, 48]} />
+          <meshBasicMaterial color="#ffe0a1" toneMapped={false} />
         </mesh>
         {[[-2.2, 1.4], [-.8, 2], [.65, 1.6], [2, 2.6], [3.15, 1.9]].map(([z, height]) => (
           <mesh key={z} position={[-7.1, -1.35 + height / 2, z]}>
             <boxGeometry args={[.12, height, 1.06]} />
-            <meshBasicMaterial color="#b17a69" />
+            <meshBasicMaterial color="#855052" />
           </mesh>
         ))}
         {[-2.4, -.55, 1.3, 3.2].map(z => (
@@ -151,7 +155,7 @@ function Room() {
         ))}
         <Box position={[-4.35, .76, .4]} size={[.16, .075, 5.6]} color="#763126" castShadow />
         <Box position={[-4.32, -.33, .4]} size={[.35, .11, 5.7]} color="#f5dfc4" />
-          <Box position={[-4.4, .91, -3.4]} size={[.18, 5.4, 2]} color="#a74c3c" castShadow />
+          <Box position={[-4.4, .91, -3.4]} size={[.18, 5.4, 2]} color="#a05b4e" castShadow />
       </group>
       {[[-2.35, 1.3, .11], [-.94, 1.47, -.12], [.53, 1.16, .07], [-.64, .43, .09]].map(([x, y, angle], index) => (
         <group key={index} position={[x, y, 3.09]} rotation={[0, 0, angle]}>
@@ -175,7 +179,7 @@ function Room() {
   )
 }
 
-function Desk({ motion, markers, finish, reducedMotion }) {
+function Desk({ motion, markers, finish }) {
   const projection = useRef(new Vector3())
   const floors = useRef([])
 
@@ -209,8 +213,8 @@ function Desk({ motion, markers, finish, reducedMotion }) {
 
   return (
     <>
-      <hemisphereLight args={['#e5a995', '#722a24', .87]} />
-      <directionalLight position={[9, 4.5, -4.8]} color="#ffe2bd" intensity={2.65} castShadow
+      <hemisphereLight args={['#f2bb9b', '#8f4a52', 1.22]} />
+      <directionalLight position={[9, 3.4, -4.8]} color="#ffc079" intensity={2.5} castShadow
         shadow-mapSize={[1024, 1024]} shadow-camera-left={-8} shadow-camera-right={8}
         shadow-camera-top={7} shadow-camera-bottom={-7} shadow-normalBias={.025} />
       <Room />
@@ -265,7 +269,7 @@ function Desk({ motion, markers, finish, reducedMotion }) {
           <meshToonMaterial color={index ? '#d5a487' : '#f6dfbb'} />
         </mesh>
       ))}
-      <Architects reducedMotion={reducedMotion} />
+      <DraftingSheets />
     </>
   )
 }
@@ -277,7 +281,6 @@ export default function Hero() {
   const motion = useRef(atelierPose(0))
   const markers = useRef([])
   const cameraTween = useRef(null)
-  const reducedMotion = useRef(false)
   const [take, setTake] = useState(0)
   const [ready, setReady] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -291,7 +294,6 @@ export default function Hero() {
       const track = journey.current
       const distance = track.offsetHeight - viewport.current.parentElement.offsetHeight
       const progress = MathUtils.clamp(-track.getBoundingClientRect().top / Math.max(distance, 1), 0, 1)
-      reducedMotion.current = preference.matches
       Object.assign(motion.current, atelierPose(preference.matches ? 1 : progress))
     }
 
@@ -351,16 +353,16 @@ export default function Hero() {
       <section>
         <div className="intro">
           <p className="index">01 / MİMARİ ESKİZ</p>
-          <h1>Bir çizgiden<br />bir mekâna.</h1>
-          <p>Mimarların çizimlerini izle, planın makete dönüşümünü keşfet.</p>
+          <h1>Bir çizgiden bir mekâna.</h1>
+          <p>Gün batımında çizim masasına yaklaş.</p>
         </div>
         <div className="atelier-journey" ref={journey}>
           <figure className="atelier-frame">
             <div className="viewport" ref={viewport}>
               <Canvas shadows dpr={[1, 1.5]} camera={{ position: atelierViews[0].camera, fov: 47 }}
                 fallback={<p className="fallback">3D önizleme için WebGL gerekir.</p>}>
-                <color attach="background" args={['#e1bba6']} />
-                <Desk motion={motion} markers={markers} finish={finish.color} reducedMotion={reducedMotion} />
+                <color attach="background" args={['#d68565']} />
+                <Desk motion={motion} markers={markers} finish={finish.color} />
               </Canvas>
               <div className="atelier-grain" aria-hidden="true" />
               {ready && active && stops.map((stop, index) => (
