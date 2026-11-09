@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { gsap } from 'gsap'
 import { BoxGeometry, EdgesGeometry, MathUtils, Vector3 } from 'three'
-import DraftingSheets from './drafting-sheets'
+import DraftingSheets, { ProjectSketch } from './drafting-sheets'
 
 const stops = [
   { id: 'plan', number: '01', title: 'Plan', point: [-.88, .23, .68],
@@ -25,20 +25,26 @@ const materials = [
 ]
 
 const overview = { camera: [2.7, 3.5, 5.7], target: [0, .52, -.55] }
+const sketchStart = .6
+
 const atelierViews = [
   { camera: [-1.2, 1.72, -5.95], target: [.02, .15, .19] },
   { camera: [-1.62, 2.07, -3.62], target: [-.46, .19, -.16] },
   { camera: [-.68, 2.65, -1.75], target: [-.56, .22, -.28] },
+  { camera: [.16, 2.02, -.37], target: [.15, .21, .01] },
 ]
 
 function atelierPose(progress) {
-  const index = progress < .5 ? 0 : 1
-  const amount = MathUtils.smoothstep(progress * 2 - index, 0, 1)
+  const approach = progress / sketchStart
+  const index = progress >= sketchStart ? 2 : approach < .5 ? 0 : 1
+  const sketch = MathUtils.clamp((progress - sketchStart) / (1 - sketchStart), 0, 1)
+  const amount = MathUtils.smoothstep(index === 2 ? sketch : approach * 2 - index, 0, 1)
   const start = cameraPose(atelierViews[index])
   const end = cameraPose(atelierViews[index + 1])
   return {
     ...Object.fromEntries(Object.keys(start).map(key => [key, MathUtils.lerp(start[key], end[key], amount)])),
     build: 0,
+    sketch: MathUtils.smoothstep(sketch, .18, .96),
   }
 }
 
@@ -239,13 +245,7 @@ function Desk({ motion, markers, finish }) {
           <Box key={z} position={[-1.025, .21, z]} size={[.69, .012, .025]} color={ink} />
         ))}
         <Box position={[-1.09, .21, .59]} size={[.025, .012, .32]} color={ink} />
-        {[-.675, .975].map(x => (
-          <Box key={x} position={[x, .201, .01]} size={[.022, .01, 1.24]} color={ink} />
-        ))}
-        {[-.61, .63].map(z => (
-          <Box key={z} position={[.15, .201, z]} size={[1.65, .01, .022]} color={ink} />
-        ))}
-        <Box position={[.15, .201, .01]} size={[.022, .01, 1.24]} color={ink} />
+        <ProjectSketch motion={motion} />
         <group position={[0, .207, 0]} ref={node => { floors.current[0] = node }}>
           <Box position={[.15, .04, .01]} size={[1.65, .08, 1.24]} color={ink} />
           <Box position={[.15, .315, .01]} size={[1.32, .47, .94]} color={finish} />
@@ -284,6 +284,7 @@ export default function Hero() {
   const [take, setTake] = useState(0)
   const [ready, setReady] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [isSketch, setIsSketch] = useState(false)
   const [active, setActive] = useState(null)
   const [finish, setFinish] = useState(materials[0])
 
@@ -292,9 +293,13 @@ export default function Hero() {
     function updateJourney() {
       if (exploring.current) return
       const track = journey.current
-      const distance = track.offsetHeight - viewport.current.parentElement.offsetHeight
-      const progress = MathUtils.clamp(-track.getBoundingClientRect().top / Math.max(distance, 1), 0, 1)
+      const top = track.getBoundingClientRect().top
+      const trackDistance = track.offsetHeight - viewport.current.parentElement.offsetHeight
+      const remainingPage = document.documentElement.scrollHeight - window.innerHeight - window.scrollY
+      const distance = Math.min(trackDistance, remainingPage - top)
+      const progress = MathUtils.clamp(-top / Math.max(distance, 1), 0, 1)
       Object.assign(motion.current, atelierPose(preference.matches ? 1 : progress))
+      setIsSketch(preference.matches || progress >= sketchStart)
     }
 
     updateJourney()
@@ -312,6 +317,7 @@ export default function Hero() {
 
   function selectStop(stop) {
     exploring.current = true
+    motion.current.sketch = 1
     setActive(stop)
     cameraTween.current?.kill()
     const value = stop === planStop ? 0 : 1
@@ -331,6 +337,7 @@ export default function Hero() {
 
   function scrub(event) {
     exploring.current = true
+    motion.current.sketch = 1
     const value = Number(event.target.value)
     cameraTween.current?.kill()
     Object.assign(motion.current, constructionPose(value / 100))
@@ -371,7 +378,7 @@ export default function Hero() {
                   onClick={() => selectStop(stop)}>{stop.number}</button>
               ))}
             </div>
-            <figcaption><span>01 / ATÖLYE · MASAYA YAKLAŞMAK İÇİN KAYDIR</span>
+            <figcaption><span>{isSketch ? '02 / ESKİZ · PLANIN ÇİZGİLERİ' : '01 / ATÖLYE · MASAYA YAKLAŞMAK İÇİN KAYDIR'}</span>
               <button onClick={replay}>↻ &nbsp;Başa dön</button>
             </figcaption>
           </figure>

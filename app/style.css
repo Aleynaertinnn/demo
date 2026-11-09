@@ -30,7 +30,7 @@ button:disabled { opacity: .5; cursor: default; }
 .construction input { display: block; width: 100%; margin: 4px 0; min-height: 36px; accent-color: #a33e27; cursor: pointer; }
 .construction input:focus-visible { outline: 2px solid #a33e27; outline-offset: 3px; }
 
-.atelier-journey { height: 175svh; }
+.atelier-journey { height: 235svh; }
 .atelier-frame { position: sticky; top: 12px; }
 .atelier-frame .viewport { height: clamp(280px, 67svh, 720px); }
 

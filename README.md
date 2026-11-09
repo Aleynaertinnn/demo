@@ -9,6 +9,6 @@ npm install
 npm run dev
 ```
 
-Tarayıcıda http://localhost:3000 adresini aç. Aşağı kaydırdıkça kamera gün batımındaki atölyenin içinden çizim masasına yaklaşır. **Başa dön** yolculuğu sıfırlar. Hareket azaltma tercihi açıksa sahne doğrudan masa kadrajına geçer.
+Tarayıcıda http://localhost:3000 adresini aç. Aşağı kaydırdıkça kamera gün batımındaki atölyenin içinden çizim masasına yaklaşır. **02 / Eskiz** aşamasında kamera kat planına döner ve dış hatlarla iç bölmeler kaydırmaya bağlı olarak çizilir. **Başa dön** yolculuğu sıfırlar. Hareket azaltma tercihi açıksa sahne doğrudan masa kadrajına geçer.
 
 Masanın altındaki Plan, Maket ve Malzemeler kontrolleri mevcut model denemesini açar. `app/hero.jsx` oda ve kamera rotasını, `app/drafting-sheets.jsx` masadaki paftaları içerir.
