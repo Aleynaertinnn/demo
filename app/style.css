@@ -13,3 +13,12 @@ figcaption { margin-top: 12px; }
 button { font: inherit; color: #fff5df; background: #203665; border: 0; padding: 10px 14px; cursor: pointer; }
 button:focus-visible { outline: 2px solid #a33e27; outline-offset: 3px; }
 .fallback { padding: 1rem; }
+.viewport { position: relative; }
+.hotspot { position: absolute; top: 0; left: 0; z-index: 1; visibility: hidden; width: 44px; height: 44px; border-radius: 50%; padding: 0; border: 2px solid #fff5df; box-shadow: 0 2px 8px #192d5666; font: 700 .85rem ui-monospace, monospace; }
+.stops, .swatches { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+button[aria-pressed="true"] { background: #a33e27; }
+button:disabled { opacity: .5; cursor: default; }
+.detail { margin-top: 12px; padding: 12px 20px 20px; border: 1px solid #23385b60; background: #f7efdb; }
+.detail h2 { margin: 0; }
+.swatches button { display: flex; align-items: center; gap: 8px; }
+.swatches span { width: 16px; height: 16px; border: 1px solid #fff5df; }
