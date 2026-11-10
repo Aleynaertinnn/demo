@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { gsap } from 'gsap'
 import { BoxGeometry, EdgesGeometry, MathUtils, Vector3, NoToneMapping, PCFShadowMap } from 'three'
 import { IllustrationPalette, IllustrationMaterial } from './illustration'
 import { exteriorState } from './exterior-cycle.mjs'
@@ -19,25 +18,6 @@ import FinaleSheet, { finalePaper } from './finale-sheet'
 import { atelierLayout } from './atelier-layout.mjs'
 import DraftingSheets, { ProjectSketch } from './drafting-sheets'
 
-const stops = [
-  { id: 'plan', number: '01', title: 'Plan', point: [-.88, .23, .68],
-    camera: [.15, 3.95, 1.25], target: [.15, .18, 0],
-    description: 'Kareli eskiz üzerinden yapının zemin oturumunu ve dolaşımını incele.' },
-  { id: 'model', number: '02', title: 'Maket', point: [.15, 2.25, -.09],
-    camera: [2.1, 3.98, 2.25], target: [.15, 1.18, .01],
-    description: 'Geri çekilen katlar, yapının kütlesini küçültür ve teraslara yer açar.' },
-  { id: 'materials', number: '03', title: 'Malzemeler', point: [1.65, .28, .82],
-    camera: [2.0, 3.98, 2.15], target: [.3, 1.05, .1],
-    description: 'Bir yüzey seç ve maketin ana cephesinin rengini karşılaştır.' },
-]
-
-const materials = [
-  { name: 'Kireç taşı', color: '#faf8ed' },
-  { name: 'Mavi karton', color: '#b7c8df' },
-  { name: 'Beton', color: '#d4dde4' },
-]
-
-const overview = { camera: [2.0, 3.98, 2.15], target: [0, .95, -.25] }
 const sketchStart = .6
 const exteriorStart = .85
 const finaleStart = .86
@@ -74,8 +54,6 @@ function atelierPose(progress) {
 function cameraPose({ camera, target }) {
   return { x: camera[0], y: camera[1], z: camera[2], tx: target[0], ty: target[1], tz: target[2] }
 }
-
-const [planStop, modelStop, materialsStop] = stops
 
 function constructionPose(progress) {
   const plan = cameraPose(atelierViews[3])
@@ -240,10 +218,9 @@ function Room({motion}) {
   </group>
 }
 
-function Desk({ motion, markers, finish }) {
-  const projection = useRef(new Vector3())
+function Desk({ motion }) {
 
-  useFrame(({ camera, size }) => {
+  useFrame(({ camera }) => {
     const { x, y, z, tx, ty, tz, build } = motion.current
     // Widen the lens on tall screens; dollying backward would cross the room walls.
     const wideFraming = MathUtils.clamp(1.15 / camera.aspect, 1, 2.1)
@@ -262,19 +239,7 @@ function Desk({ motion, markers, finish }) {
     camera.lookAt(tx,ty,tz)
     camera.updateMatrixWorld()
 
-    stops.forEach(({ id, point }, index) => {
-      const marker = markers.current[index]
-      if (!marker) return
-      projection.current.set(...point)
-      if (id === 'model') projection.current.y = MathUtils.lerp(.28, point[1], build)
-      projection.current.project(camera)
-      const projected = projection.current
-      const left = (projected.x + 1) * size.width / 2
-      const top = (1 - projected.y) * size.height / 2
-      marker.style.transform = `translate(${left}px, ${top}px) translate(-50%, -50%)`
-      marker.style.visibility = Math.abs(projected.x) <= .94 && Math.abs(projected.y) <= .9
-        ? 'visible' : 'hidden'
-    })
+
   })
 
   return (
@@ -288,7 +253,7 @@ function Desk({ motion, markers, finish }) {
         <Box position={[.12, .077, .13]} size={[3.42, .006, 2.12]} color={paper} paperSurface />
         <Box position={[.2, .082, .06]} size={[3.25, .006, 2]} color={white} paperSurface />
         <ProjectSketch motion={motion} />
-        <ArchitectureModel motion={motion} finish={finish} />
+        <ArchitectureModel motion={motion} finish="#faf8ed" />
       </group>
       {[-.92, -.78].map((z, index) => (
         <mesh key={z} position={[1.48, .145 + index * .002, z]} rotation={[0, .12, Math.PI / 2]} castShadow>
@@ -304,31 +269,18 @@ function Desk({ motion, markers, finish }) {
 export default function Hero() {
   const viewport = useRef(null)
   const journey = useRef(null)
-  const exploring = useRef(false)
   const motion = useRef(atelierPose(0))
-  const markers = useRef([])
-  const cameraTween = useRef(null)
   const [take, setTake] = useState(0)
-  const [ready, setReady] = useState(false)
-  const [progress, setProgress] = useState(0)
   const [stage, setStage] = useState(1)
   const [interiorProgress, setInteriorProgress] = useState(0)
   const [designIndex, setDesignIndex] = useState(0)
   const [dayProgress, setDayProgress] = useState(0)
   const [exteriorProgress, setExteriorProgress] = useState(0)
   const [finaleProgress, setFinaleProgress] = useState(0)
-  const [active, setActive] = useState(null)
-  const [finish, setFinish] = useState(materials[0])
 
   useLayoutEffect(() => {
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
-    function updateJourney(event) {
-      if (exploring.current) {
-        if (event?.type !== 'scroll') return
-        exploring.current = false
-        cameraTween.current?.kill()
-        setActive(null)
-      }
+    function updateJourney() {
       const track = journey.current
       const top = track.getBoundingClientRect().top
       const trackDistance = track.offsetHeight - viewport.current.parentElement.offsetHeight
@@ -350,12 +302,10 @@ export default function Hero() {
       setExteriorProgress(Math.round(outside*100))
       setFinaleProgress(Math.round(finale*100))
       setInteriorProgress(Math.round(opening*100))
-      setProgress(Math.round(build * 100))
       setStage(progress>=finaleStart || preference.matches ? 8 : timeline >= exteriorStart ? 7 : timeline >= lifeStart ? 6 : timeline >= designStart ? 5 : timeline >= interiorStart ? 4 : timeline >= modelStart ? 3 : timeline >= sketchStart * modelStart ? 2 : 1)
     }
 
     updateJourney()
-    setReady(true)
     window.addEventListener('scroll', updateJourney, { passive: true })
     window.addEventListener('resize', updateJourney)
     preference.addEventListener('change', updateJourney)
@@ -363,147 +313,16 @@ export default function Hero() {
       window.removeEventListener('scroll', updateJourney)
       window.removeEventListener('resize', updateJourney)
       preference.removeEventListener('change', updateJourney)
-      cameraTween.current?.kill()
     }
   }, [take])
 
-  function selectStop(stop) {
-    exploring.current = true
-    motion.current.finale = 0
-    setFinaleProgress(0)
-    setStage(3)
-    setDesignIndex(0)
-    setInteriorProgress(0)
-    motion.current.open = 0
-    motion.current.design = 0
-    motion.current.day = 0
-    motion.current.exterior = 0
-    setDayProgress(0)
-    setExteriorProgress(0)
-    motion.current.sketch = 1
-    setActive(stop)
-    cameraTween.current?.kill()
-    const value = stop === planStop ? 0 : 1
-    const pose = stop === planStop || stop === modelStop
-      ? constructionPose(value)
-      : { ...cameraPose(stop ?? overview), build: value, open: 0, design: 0, day: 0, exterior: 0 }
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      Object.assign(motion.current, pose)
-      setProgress(value * 100)
-      return
-    }
-    cameraTween.current = gsap.to(motion.current, {
-      ...pose, duration: .85, ease: 'power2.inOut',
-      onUpdate: () => setProgress(Math.round(motion.current.build * 100)),
-    })
-  }
-
-  function scrub(event) {
-    exploring.current = true
-    motion.current.finale = 0
-    setFinaleProgress(0)
-    setStage(3)
-    setDesignIndex(0)
-    setInteriorProgress(0)
-    motion.current.open = 0
-    motion.current.design = 0
-    motion.current.day = 0
-    motion.current.exterior = 0
-    setDayProgress(0)
-    setExteriorProgress(0)
-    motion.current.sketch = 1
-    const value = Number(event.target.value)
-    cameraTween.current?.kill()
-    Object.assign(motion.current, constructionPose(value / 100))
-    setProgress(value)
-    setActive(value === 0 ? planStop : value === 100 ? modelStop : null)
-  }
-
-  function inspectInterior(value, animate = false) {
-    exploring.current = true
-    motion.current.finale = 0
-    setFinaleProgress(0)
-    cameraTween.current?.kill()
-    setActive(null)
-    setStage(4)
-    setDayProgress(0)
-    setExteriorProgress(0)
-    setDesignIndex(0)
-    setProgress(100)
-    const pose=interiorPose(value)
-    if(animate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      cameraTween.current=gsap.to(motion.current,{...pose,duration:1.1,ease:'power2.inOut',onUpdate:()=>setInteriorProgress(Math.round(motion.current.open*100))})
-    } else {
-      Object.assign(motion.current,pose)
-      setInteriorProgress(Math.round(value*100))
-    }
-  }
-
-  function chooseDesign(index) {
-    exploring.current=true
-    motion.current.finale = 0
-    setFinaleProgress(0)
-    cameraTween.current?.kill()
-    setActive(null)
-    setStage(5)
-    setDayProgress(0)
-    setExteriorProgress(0)
-    setProgress(100)
-    setInteriorProgress(100)
-    const pose=designPose(index)
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      Object.assign(motion.current,pose)
-      setDesignIndex(index)
-    } else {
-      cameraTween.current=gsap.to(motion.current,{...pose,duration:1.1,ease:'power2.inOut',onUpdate:()=>setDesignIndex(Math.round(motion.current.design||0))})
-    }
-  }
-
-  function inspectDay(value,animate=false) {
-    exploring.current=true
-    motion.current.finale = 0
-    setFinaleProgress(0)
-    cameraTween.current?.kill()
-    setActive(null)
-    setStage(6)
-    setExteriorProgress(0)
-    setProgress(100)
-    setInteriorProgress(100)
-    setDesignIndex(2)
-    const pose=dayPose(value)
-    if(animate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      cameraTween.current=gsap.to(motion.current,{...pose,duration:1.3,ease:'power2.inOut',onUpdate:()=>setDayProgress(Math.round((motion.current.day||0)*100))})
-    } else {Object.assign(motion.current,pose);setDayProgress(Math.round(value*100))}
-  }
-
-  function inspectExterior(value,animate=false) {
-    exploring.current=true
-    motion.current.finale = 0
-    setFinaleProgress(0)
-    cameraTween.current?.kill()
-    setActive(null)
-    setStage(7)
-    setProgress(100)
-    setInteriorProgress(100)
-    setDesignIndex(2)
-    setDayProgress(100)
-    const pose=exteriorPose(value)
-    if(animate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      cameraTween.current=gsap.to(motion.current,{...pose,duration:1.5,ease:'power2.inOut',onUpdate:()=>setExteriorProgress(Math.round((motion.current.exterior||0)*100))})
-    } else {Object.assign(motion.current,pose);setExteriorProgress(Math.round(value*100))}
-  }
-
   function replay() {
-    cameraTween.current?.kill()
-    exploring.current = false
-    setProgress(0)
     setDayProgress(0)
     setExteriorProgress(0)
     setDesignIndex(0)
     setInteriorProgress(0)
     motion.current.finale=0
     setFinaleProgress(0)
-    setActive(null)
     window.scrollTo({ top: 0, behavior: 'instant' })
     setTake(value => value + 1)
   }
@@ -524,7 +343,7 @@ export default function Hero() {
                 fallback={<p className="fallback">3D önizleme için WebGL gerekir.</p>}>
                 <color attach="background" args={['#e8edf0']} />
                 <IllustrationPalette motion={motion}>
-                  <Desk motion={motion} markers={markers} finish={finish.color} />
+                  <Desk motion={motion} />
                 </IllustrationPalette>
               </Canvas>
               <div className="atelier-grain" aria-hidden="true" />
@@ -538,93 +357,12 @@ export default function Hero() {
                 <h2>Her mekân,<br />bir çizgiyle başlar.</h2>
                 <button onClick={replay}>Yeniden başla ↗</button>
               </div>}
-              {ready && active && stops.map((stop, index) => (
-                <button className="hotspot" key={stop.id} ref={node => { markers.current[index] = node }}
-                  aria-label={stop.title} aria-pressed={active.id === stop.id}
-                  onClick={() => selectStop(stop)}>{stop.number}</button>
-              ))}
+
             </div>
             <figcaption><span>{stage === 8 ? '08 / YENİ BİR ÇİZGİ' : stage === 7 ? '07 / DIŞARIDAN · EVİN IŞIĞI' : stage === 6 ? '06 / YAŞAM · GÜNÜN İÇİNDEN' : stage === 5 ? '05 / TASARIM · AYNI EV, ÜÇ YORUM' : stage === 4 ? '04 / İÇ MEKÂN · KATLAR ARALANIYOR' : stage === 3 ? '03 / MAKET · ÇİZGİLER YÜKSELİYOR' : stage === 2 ? '02 / ESKİZ · PLANIN ÇİZGİLERİ' : '01 / ATÖLYE · MASAYA YAKLAŞMAK İÇİN KAYDIR'}</span>
               <button onClick={replay}>↻ &nbsp;Başa dön</button>
             </figcaption>
           </figure>
-        </div>
-        <div className="construction">
-          <div className="construction-heading">
-            <label htmlFor="construction-progress">03 · Eskizden Makete</label>
-            <span aria-hidden="true">%{progress}</span>
-          </div>
-          <input id="construction-progress" type="range" min="0" max="100"
-            value={progress} onChange={scrub} disabled={!ready}
-            aria-valuetext={`Yüzde ${progress}`} />
-          <div className="construction-labels" aria-hidden="true"><span>Plan</span><span>Maket</span></div>
-        </div>
-        <div className="construction">
-          <div className="construction-heading">
-            <label htmlFor="interior-progress">04 · Maketin İçinde</label>
-            <span aria-hidden="true">%{interiorProgress}</span>
-          </div>
-          <input id="interior-progress" type="range" min="0" max="100" value={interiorProgress}
-            onChange={event=>inspectInterior(Number(event.target.value)/100)} disabled={!ready}
-            aria-valuetext={`İç mekân yüzde ${interiorProgress} açık`} />
-          <div className="construction-labels" aria-hidden="true"><span>Birleşik yapı</span><span>İç mekân</span></div>
-        </div>
-        <section className="design-picker" aria-labelledby="design-heading">
-          <p className="index">05 / AYNI EV, ÜÇ YORUM</p>
-          <h2 id="design-heading">Bir mekân, farklı hisler.</h2>
-          <p>Kat açıldıktan sonra kaydırmaya devam et veya bir tasarım seç.</p>
-          <div className="design-options" role="group" aria-label="İç mekân tasarımı">
-            {interiorDesigns.map((design,index)=><button key={design.id} disabled={!ready}
-              aria-pressed={designIndex===index} onClick={()=>chooseDesign(index)}>
-              <span className="design-swatches" aria-hidden="true">{['wood','fabric','rug'].map(kind=><i key={kind} style={{background:design.colors[kind]}} />)}</span>
-              <strong>{design.name}</strong><span>{design.description}</span>
-            </button>)}
-          </div>
-        </section>
-        <div className="construction">
-          <div className="construction-heading"><label htmlFor="day-progress">06 · Günün İçinden</label><span>{journeyLabel(dayProgress/100)}</span></div>
-          <input id="day-progress" type="range" min="0" max="100" value={dayProgress} disabled={!ready}
-            onChange={event=>inspectDay(Number(event.target.value)/100)} aria-valuetext={journeyLabel(dayProgress/100)} />
-          <div className="construction-labels" aria-hidden="true"><span>Yemek alanı</span><span>Salon · Pencere</span></div>
-        </div>
-        <div className="construction">
-          <div className="construction-heading"><label htmlFor="exterior-progress">07 · Evin Işığı</label><span aria-hidden="true">%{exteriorProgress}</span></div>
-          <input id="exterior-progress" type="range" min="0" max="100" value={exteriorProgress} disabled={!ready}
-            onChange={event=>inspectExterior(Number(event.target.value)/100)} aria-valuetext={`Dış görünüm yüzde ${exteriorProgress}`} />
-          <div className="construction-labels" aria-hidden="true"><span>Pencerenin içinden</span><span>Masadaki maket</span></div>
-        </div>
-        <nav className="stops" aria-label="Çalışma masasını keşfet">
-          {stops.map(stop => (
-            <button key={stop.id} disabled={!ready} aria-pressed={active?.id === stop.id}
-              onClick={() => selectStop(stop)}>{stop.number} · {stop.title}</button>
-          ))}
-          <button disabled={!ready} onClick={()=>inspectInterior(1,true)}>04 · İç mekânı keşfet</button>
-          <button disabled={!ready} onClick={()=>inspectDay(1,true)}>06 · Akşamın içinden</button>
-          <button disabled={!ready} onClick={()=>inspectExterior(1,true)}>07 · Gece maketi</button>
-          {(active || progress < 100) && <button onClick={() => selectStop(null)}>Genel görünüm</button>}
-        </nav>
-        <div aria-live="polite">
-          {active && (
-            <section className="detail" aria-labelledby="detail-title">
-              <p className="index">DETAY / {active.number}</p>
-              <h2 id="detail-title">{active.title}</h2>
-              <p>{active.description}</p>
-              {active === modelStop && progress === 100 && (
-                <button onClick={() => selectStop(materialsStop)}>Cephe malzemesini seç</button>
-              )}
-              {active === materialsStop && (
-                <div className="swatches" role="group" aria-label="Cephe malzemesi">
-                  {materials.map(material => (
-                    <button key={material.name} aria-pressed={finish === material}
-                      onClick={() => setFinish(material)}>
-                      <span aria-hidden="true" style={{ background: material.color }} />
-                      {material.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </section>
-          )}
         </div>
       </section>
     </main>
