@@ -119,3 +119,15 @@ Arayüz bileşenlerinde doğrudan hex kodu yerine tema sınıflarını kullanın
 
 `text-on-brand` koyu mavi zemin üzerindeki açık yazılar içindir.
 3D malzemelerin ve iç mekân tasarımlarının kendi renkleri sahne dosyalarında kalır.
+
+## Header bağlantıları
+
+Ortak header kök layout'ta yer alır. Logo, `public/images/uluk-mimarlik-u-logo.svg`
+dosyasından gelir; marka adı metindir. Masaüstünde hücreli menü, mobilde açılır menü kullanılır.
+
+- Logo: `/`
+- Projeler: `/projeler` (sayfa içeriği sonraki adımda hazırlanacak)
+- Ofis: `/ofis` (sayfa içeriği sonraki adımda hazırlanacak)
+- Hizmetler: `/#hizmetler` (anasayfa bölümü sonraki adımda hazırlanacak)
+- Süreç: `/#surec` (mevcut Three.js deneyimi)
+- Projenizi konuşalım: `/iletisim` (sayfa içeriği sonraki adımda hazırlanacak)

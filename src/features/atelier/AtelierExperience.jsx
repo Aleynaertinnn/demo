@@ -1,6 +1,5 @@
 'use client'
 
-import Header from '@/components/layout/Header'
 import useScrollJourney from './animation/use-scroll-journey'
 import { sceneLabels } from './config/journey.mjs'
 import AtelierCanvas from './scene/AtelierCanvas'
@@ -12,8 +11,7 @@ export default function AtelierExperience() {
   const journey = useScrollJourney()
   return (
     <main className="atelier-experience">
-      <Header />
-      <section>
+      <section id="surec" aria-label="Bir proje nasıl ilerler?">
         <Intro />
         <div className="atelier-journey" ref={journey.journey}>
           <figure className="atelier-frame">
