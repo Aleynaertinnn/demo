@@ -42,9 +42,9 @@
 
 /* Hero composition: the title and the live scene share the first viewport. */
 .atelier-experience { max-width: none; padding: 0 clamp(12px, 1.8vw, 32px) 20px; }
-.atelier-frame .viewport { height: clamp(340px, 61svh, 820px); box-shadow: none; }
+.atelier-frame .viewport { height: clamp(320px, 55svh, 740px); box-shadow: none; }
 .atelier-experience figcaption { margin-top: 8px; }
 
 @media (max-width: 700px) {
-  .atelier-frame .viewport { height: clamp(330px, 61svh, 650px); }
+  .atelier-frame .viewport { height: clamp(300px, 55svh, 600px); }
 }
