@@ -1,6 +1,6 @@
 'use client'
 
-import Header from '@/components/Header'
+import Header from '@/components/layout/Header'
 import useScrollJourney from './animation/use-scroll-journey'
 import { sceneLabels } from './config/journey.mjs'
 import AtelierCanvas from './scene/AtelierCanvas'

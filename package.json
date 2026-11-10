@@ -5,9 +5,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "models": "node scripts/models/build-atelier-models.mjs"
+    "models": "node src/scripts/models/build-atelier-models.mjs"
   },
   "dependencies": {
+    "@iconify-icons/lucide": "^2.0.29",
+    "@iconify/react": "^6.0.4",
     "@react-three/fiber": "^9.8.2",
     "next": "^16.4.6",
     "react": "^19.3.1",
@@ -15,7 +17,10 @@
     "three": "^0.187.0"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.5",
     "@types/node": "26.6.6",
+    "postcss": "^8.5.32",
+    "tailwindcss": "^4.3.5",
     "typescript": "7.0.2"
   }
 }

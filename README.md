@@ -80,3 +80,42 @@ ile sunulur. `app/layout.jsx` içindeki CSS değişkenleri:
 - `--font-notes`: Architects Daughter — başlık üstü açıklamalar ve eskiz notları.
 
 3D paftalardaki yazı dokuları da not fontunun yüklenmesini izler.
+
+## Tailwind ve ikonlar
+
+Tailwind CSS 4, `postcss.config.mjs` ve `src/app/globals.css` üzerinden bağlıdır.
+Mevcut 3D sahne görünümünü korumak için tema ve utility katmanları yüklenir;
+Preflight sıfırlaması uygulanmaz. Yeni arayüzlerde Tailwind sınıfları kullanılabilir.
+`font-sans`, `font-display`, `font-handwritten` mevcut üç fontu;
+`text-ink`, `bg-paper`, `text-brand` ortak renkleri kullanır.
+
+Iconify için ortak bileşen `src/components/ui/Icon.tsx` dosyasıdır.
+İkon verileri yerel paketten tek tek içe aktarılır; dış API isteği gerekmez:
+
+```tsx
+import arrowUpRight from '@iconify-icons/lucide/arrow-up-right'
+import Icon from '@/components/ui/Icon'
+
+<Icon icon={arrowUpRight} className="text-brand" width={20} height={20} />
+```
+
+İkonlar varsayılan olarak dekoratiftir; yalnız ikon içeren düğmelere açıklayıcı
+bir `aria-label` verin.
+
+## Renk teması
+
+Ortak renklerin tek kaynağı `src/app/globals.css` içindeki `@theme` bloğudur.
+Arayüz bileşenlerinde doğrudan hex kodu yerine tema sınıflarını kullanın:
+
+| Renk | Kod | Kullanım |
+| --- | --- | --- |
+| Kâğıt kremi | `#f6f3e8` | `bg-paper` / `bg-background` |
+| Açık yüzey | `#fbf9ef` | `bg-surface` / `bg-card` |
+| Koyu mavi mürekkep | `#233d72` | `text-ink` / `text-foreground` |
+| Ana mavi | `#2452c7` | `text-brand` / `bg-primary` |
+| Koyu vurgu | `#2451bb` | `bg-brand-strong` |
+| Soluk mavi metin | `#58749d` | `text-ink-muted` |
+| Kenar çizgisi | `#7089ad` | `border-line/27` |
+
+`text-on-brand` koyu mavi zemin üzerindeki açık yazılar içindir.
+3D malzemelerin ve iç mekân tasarımlarının kendi renkleri sahne dosyalarında kalır.
