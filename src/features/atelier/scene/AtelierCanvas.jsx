@@ -6,7 +6,7 @@ import AtelierScene from './AtelierScene'
 
 export default function AtelierCanvas({ motion }) {
   return (
-    <Canvas shadows={PCFShadowMap}
+    <Canvas shadows={PCFShadowMap} resize={{ scroll: false, debounce: 0 }}
       gl={{ antialias: true, toneMapping: NoToneMapping, localClippingEnabled: true }}
       dpr={[1, 1.5]} camera={{ position: atelierViews[0].camera, fov: 47 }}
       fallback={<p className="fallback">3D önizleme için WebGL gerekir.</p>}>

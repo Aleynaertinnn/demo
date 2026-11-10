@@ -1,33 +1,37 @@
 'use client'
 
 import useScrollJourney from './animation/use-scroll-journey'
-import { sceneLabels } from './config/journey.mjs'
+import { presentationSteps } from './config/presentation.mjs'
 import AtelierCanvas from './scene/AtelierCanvas'
 import HeroIntro from '@/components/home/HeroIntro'
-import SceneCaption from './components/SceneCaption'
-import FinaleCaption from './components/FinaleCaption'
+import ProjectInvitation from '@/components/home/ProjectInvitation'
 
 export default function AtelierExperience() {
-  const journey = useScrollJourney()
+  const { journey, frame, motion } = useScrollJourney()
   return (
     <main className="atelier-experience">
       <section id="surec" aria-label="Bir proje nasıl ilerler?">
         <HeroIntro />
-        <div className="atelier-journey" ref={journey.journey}>
-          <figure className="atelier-frame">
-            <div className="viewport" ref={journey.viewport}>
-              <AtelierCanvas motion={journey.motion} />
+        <div className="atelier-journey" ref={journey}>
+          <div className="atelier-frame" ref={frame}>
+            <div className="viewport">
+              <AtelierCanvas motion={motion} />
               <div className="atelier-grain" aria-hidden="true" />
-              <SceneCaption {...journey} />
-              <FinaleCaption {...journey} />
             </div>
-            <figcaption>
-              <span>{sceneLabels[journey.stage]}</span>
-              <button onClick={journey.replay}>↻ &nbsp;Başa dön</button>
-            </figcaption>
-          </figure>
+            <div className="presentation-copy">
+              {presentationSteps.map((step, index) => (
+                <article key={step.label} data-presentation-step={index + 1} className={`presentation-step ${index % 2 ? 'presentation-step-left' : 'presentation-step-right'}`}>
+                  <p className="presentation-label">{step.label}</p>
+                  <h2>{step.title}</h2>
+                  {step.description && <p className="presentation-description">{step.description}</p>}
+                  {index === 0 && <p className="presentation-sketch-note"><span>ESKİZ / İLK ÇİZGİLER</span>Hayaliniz, ölçüleri ve mekânları belirleyen bir plana dönüşür.</p>}
+                </article>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
+      <ProjectInvitation />
     </main>
   )
 }
