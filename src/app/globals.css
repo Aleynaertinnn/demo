@@ -6,6 +6,7 @@
 @theme inline {
   --font-sans: var(--font-body);
   --font-display: var(--font-heading);
+  --font-logo-face: var(--font-logo);
   --font-handwritten: var(--font-notes);
   --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
