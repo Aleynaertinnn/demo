@@ -1,13 +1,14 @@
+import { modelPaths } from '../config/assets.mjs'
 import { Suspense, useEffect, useMemo } from 'react'
 import { useLoader, useThree } from '@react-three/fiber'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js'
 import { MeshToonMaterial, PMREMGenerator } from 'three'
-import { atelierLayout } from './atelier-layout.mjs'
-import { blueIllustration, useIllustrationRamp, useNightUniform } from './illustration'
+import { atelierLayout } from '../config/layout.mjs'
+import { blueIllustration, useIllustrationRamp, useNightUniform } from '../materials/illustration'
 
 function WindowAsset() {
-  const { scene } = useLoader(GLTFLoader, '/models/window.glb')
+  const { scene } = useLoader(GLTFLoader, modelPaths.window)
   const gl = useThree(state => state.gl)
   const gradientMap = useIllustrationRamp()
   const night = useNightUniform()

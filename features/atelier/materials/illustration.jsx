@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { dayState } from './day-cycle.mjs'
+import { dayState } from '../animation/day-cycle.mjs'
 import { DataTexture, NearestFilter, RedFormat, UnsignedByteType } from 'three'
 
 const RampContext = createContext(null)

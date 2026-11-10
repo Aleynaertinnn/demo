@@ -1,8 +1,8 @@
 import { BoxGeometry, CylinderGeometry, DodecahedronGeometry } from 'three'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 
-import { floorHeight, modelBase, storeys, grid, cells, footprints } from './project-plan.mjs'
-export { floorHeight, modelBase, storeys } from './project-plan.mjs'
+import { floorHeight, modelBase, storeys, grid, cells, footprints } from '../config/project-plan.mjs'
+export { floorHeight, modelBase, storeys } from '../config/project-plan.mjs'
 const { x: x0, z: z0, width: cellX, depth: cellZ } = grid
 const key = (x, z) => `${x}:${z}`
 

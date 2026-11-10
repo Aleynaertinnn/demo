@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Color, EdgesGeometry, MathUtils } from 'three'
-import { IllustrationMaterial } from './illustration'
-import { createInterior, interiorBase } from './interior-geometry.mjs'
-import { dayState } from './day-cycle.mjs'
-import { interiorDesigns, designWeight } from './interior-designs.mjs'
+import { IllustrationMaterial } from '../materials/illustration'
+import { createInterior, interiorBase } from '../geometry/interior.mjs'
+import { dayState } from '../animation/day-cycle.mjs'
+import { interiorDesigns, designWeight } from '../config/interior-designs.mjs'
 
 function InteriorBatch({ kind, geometry, design = null, motion }){
   const material=useRef(null)

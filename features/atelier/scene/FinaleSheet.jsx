@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { MathUtils } from 'three'
 
-export const finalePaper = [-2.4, .083, -.4]
+import { finalePaper } from '../config/layout.mjs'
 
 export default function FinaleSheet({ motion }) {
   const stroke = useRef(null), light = useRef(null)

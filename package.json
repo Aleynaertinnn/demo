@@ -4,11 +4,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "models": "node scripts/models/build-atelier-models.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.8.2",
-    "gsap": "^3.15.1",
     "next": "^16.4.6",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

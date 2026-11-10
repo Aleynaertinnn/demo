@@ -1,9 +1,9 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Color, MathUtils } from 'three'
-import { exteriorState } from './exterior-cycle.mjs'
-import { dayState } from './day-cycle.mjs'
-import { interiorBase } from './interior-geometry.mjs'
+import { exteriorState } from '../animation/exterior-cycle.mjs'
+import { dayState } from '../animation/day-cycle.mjs'
+import { interiorBase } from '../geometry/interior.mjs'
 
 const nightSky=new Color('#203a6a'),daySky=new Color('#d2e4ef'),warm=new Color('#ffca91'),sunlight=new Color('#fff9e6'),moonlight=new Color('#adc8ff')
 export default function DaylightScene({motion}) {

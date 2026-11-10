@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { EdgesGeometry, MathUtils, Plane, Vector3 } from 'three'
-import { IllustrationMaterial } from './illustration'
-import { projectLines } from './project-plan.mjs'
-import { exteriorState, glazingState } from './exterior-cycle.mjs'
-import { dayState } from './day-cycle.mjs'
-import InteriorModel from './interior-model'
-import { openingState, interiorBase, interiorLevel } from './interior-geometry.mjs'
-import { createArchitecture } from './architecture-geometry.mjs'
+import { IllustrationMaterial } from '../materials/illustration'
+import { projectLines } from '../config/project-plan.mjs'
+import { exteriorState, glazingState } from '../animation/exterior-cycle.mjs'
+import { dayState } from '../animation/day-cycle.mjs'
+import InteriorModel from './InteriorModel'
+import { openingState, interiorBase, interiorLevel } from '../geometry/interior.mjs'
+import { createArchitecture } from '../geometry/architecture.mjs'
 
 function ModelBatch({ geometry, kind, finish, clippingPlanes, motion, level }) {
   const material = useRef(null)

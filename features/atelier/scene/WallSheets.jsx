@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import { BufferGeometry, Vector3 } from 'three'
-import { IllustrationMaterial } from './illustration'
-import { projectLines } from './project-plan.mjs'
+import { IllustrationMaterial } from '../materials/illustration'
+import { projectLines } from '../config/project-plan.mjs'
 
 const sheets = [
   [-1.10,.65,1.05,1.28,-.055], [.12,.62,1.18,1.02,.035], [1.45,.69,1.12,1.35,-.045], [2.79,.72,1.13,1.20,.07],

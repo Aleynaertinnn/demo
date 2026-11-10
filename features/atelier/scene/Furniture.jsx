@@ -1,11 +1,12 @@
+import { modelPaths } from '../config/assets.mjs'
 import { Suspense, useEffect, useMemo } from 'react'
 import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { EdgesGeometry, LineBasicMaterial, LineSegments, MeshToonMaterial } from 'three'
-import { useIllustrationRamp, blueIllustration, useNightUniform } from './illustration'
+import { useIllustrationRamp, blueIllustration, useNightUniform } from '../materials/illustration'
 
 function FurnitureAsset({ name, position, rotation }) {
-  const { scene } = useLoader(GLTFLoader, `/models/${name}.glb`)
+  const { scene } = useLoader(GLTFLoader, modelPaths[name])
   const gradientMap = useIllustrationRamp()
   const night = useNightUniform()
   const { model, ownedMaterials, outlines } = useMemo(() => {
@@ -48,7 +49,7 @@ function FurnitureAsset({ name, position, rotation }) {
   return <primitive object={model} position={position} rotation={rotation} dispose={null} />
 }
 
-export default function AtelierFurniture() {
+export default function Furniture() {
   return (
     <group name="atelier-furniture">
       <Suspense fallback={null}><FurnitureAsset name="desk" /></Suspense>

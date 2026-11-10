@@ -1,7 +1,7 @@
 import { BoxGeometry, CylinderGeometry, DodecahedronGeometry, CatmullRomCurve3, TubeGeometry, Vector3, Matrix4 } from 'three'
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
-import { grid, cells, footprints, projectLines, floorHeight, modelBase } from './project-plan.mjs'
+import { grid, cells, footprints, projectLines, floorHeight, modelBase } from '../config/project-plan.mjs'
 
 export const interiorLevel = 3
 export const interiorBase = modelBase + interiorLevel * floorHeight

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { BoxGeometry, BufferGeometry, Color, EdgesGeometry, Shape, ShapeGeometry, PlaneGeometry, Vector3 } from 'three'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
-import { dayState } from './day-cycle.mjs'
+import { dayState } from '../animation/day-cycle.mjs'
 
 function buildCity(){
   const groups={far:[],near:[],tower:[],windows:[],lit:[]}

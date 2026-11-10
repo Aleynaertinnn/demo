@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { BufferGeometry, CanvasTexture, Vector3, SRGBColorSpace } from 'three'
-import { IllustrationMaterial } from './illustration'
-import { paperOffset } from './atelier-layout.mjs'
-import { projectLines, floorHeight, storeys, grid, footprints, perimeter } from './project-plan.mjs'
-export { projectLines } from './project-plan.mjs'
+import { IllustrationMaterial } from '../materials/illustration'
+import { paperOffset } from '../config/layout.mjs'
+import { projectLines, floorHeight, storeys, grid, footprints, perimeter } from '../config/project-plan.mjs'
+export { projectLines } from '../config/project-plan.mjs'
 
 const ink = '#274b80', guide = '#8c9eaf', paper = '#faf7eb'
 function segments(lines) {

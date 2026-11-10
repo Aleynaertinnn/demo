@@ -1,4 +1,5 @@
-import './style.css'
+import './globals.css'
+import '@/features/atelier/atelier.css'
 
 export const metadata = { title: 'Kâğıt Atölyesi', description: 'Bir eskizden 3D sahneye.' }
 

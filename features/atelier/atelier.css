@@ -1,17 +1,14 @@
-:root { color: #233d72; background: #f6f3e8; font-family: system-ui, sans-serif; }
-* { box-sizing: border-box; }
-body { margin: 0; background-image: linear-gradient(#6886a312 1px, transparent 1px), linear-gradient(90deg, #6886a312 1px, transparent 1px); background-size: 20px 20px; }
-main { max-width: 1440px; padding: 0 clamp(20px, 5vw, 78px) 28px; margin: auto; }
-header, figcaption { display: flex; justify-content: space-between; align-items: center; gap: 16px; font: 600 .72rem ui-monospace, monospace; }
-header { border-bottom: 1px solid #7089ad45; min-height: 64px; }
+.atelier-experience { max-width: 1440px; padding: 0 clamp(20px, 5vw, 78px) 28px; margin: auto; }
+.atelier-experience header, .atelier-experience figcaption { display: flex; justify-content: space-between; align-items: center; gap: 16px; font: 600 .72rem ui-monospace, monospace; }
+.atelier-experience header { border-bottom: 1px solid #7089ad45; min-height: 64px; }
 .intro { margin: clamp(24px, 5vh, 56px) 0 22px; }
 .index { font: 700 .75rem ui-monospace, monospace; color: #2452c7; }
-h1 { margin: 8px 0 12px; font-size: clamp(3rem, 8vw, 7.5rem); line-height: .86; letter-spacing: -.055em; }
-figure { margin: 0; }
+.atelier-experience h1 { margin: 8px 0 12px; font-size: clamp(3rem, 8vw, 7.5rem); line-height: .86; letter-spacing: -.055em; }
+.atelier-experience figure { margin: 0; }
 .viewport { height: clamp(300px, 51svh, 660px); border: 1px solid #233d72; background: #e3ebf1; }
-figcaption { margin-top: 12px; }
-button { font: inherit; color: #fffdf2; background: #2451bb; border: 0; padding: 10px 14px; cursor: pointer; }
-button:focus-visible { outline: 2px solid #2452c7; outline-offset: 3px; }
+.atelier-experience figcaption { margin-top: 12px; }
+.atelier-experience button { font: inherit; color: #fffdf2; background: #2451bb; border: 0; padding: 10px 14px; cursor: pointer; }
+.atelier-experience button:focus-visible { outline: 2px solid #2452c7; outline-offset: 3px; }
 .fallback { padding: 1rem; }
 .viewport { position: relative; }
 
