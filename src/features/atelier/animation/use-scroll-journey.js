@@ -62,9 +62,9 @@ export default function useScrollJourney() {
       const part = step.finale ? smooth(local, .10, .80) : smooth(local, .16, .86)
       const timeline = MathUtils.lerp(step.start, step.end, part)
       const isMobile = window.matchMedia('(max-width: 700px)').matches
-      // The text exits first, then the image opens before the next panel enters.
-      const panelOpacity = smooth(local, .08, .22) * (1 - smooth(local, step.finale ? .94 : .78, step.finale ? 1 : .90))
-      const split = smooth(local, .03, .18) * (1 - smooth(local, step.finale ? .97 : .87, step.finale ? 1 : .98))
+      // The last composition stays in place until the sticky section scrolls away.
+      const panelOpacity = smooth(local, .08, .22) * (step.finale ? 1 : 1 - smooth(local, .78, .90))
+      const split = smooth(local, .03, .18) * (step.finale ? 1 : 1 - smooth(local, .87, .98))
       const sceneShare = 1 - .35 * split
       const sceneLeft = index % 2 ? 1 - sceneShare : 0
       const direction = index % 2 ? -1 : 1

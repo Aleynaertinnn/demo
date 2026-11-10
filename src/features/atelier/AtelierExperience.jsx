@@ -1,13 +1,12 @@
-'use client'
+'use client';
 
-import useScrollJourney from './animation/use-scroll-journey'
-import { presentationSteps } from './config/presentation.mjs'
-import AtelierCanvas from './scene/AtelierCanvas'
-import HeroIntro from '@/components/home/HeroIntro'
-import ProjectInvitation from '@/components/home/ProjectInvitation'
+import useScrollJourney from './animation/use-scroll-journey';
+import { presentationSteps } from './config/presentation.mjs';
+import AtelierCanvas from './scene/AtelierCanvas';
+import HeroIntro from '@/components/home/HeroIntro';
 
 export default function AtelierExperience() {
-  const { journey, frame, motion } = useScrollJourney()
+  const { journey, frame, motion } = useScrollJourney();
   return (
     <main className="atelier-experience">
       <section id="surec" aria-label="Bir proje nasıl ilerler?">
@@ -20,18 +19,24 @@ export default function AtelierExperience() {
             </div>
             <div className="presentation-copy">
               {presentationSteps.map((step, index) => (
-                <article key={step.label} data-presentation-step={index + 1} className={`presentation-step ${index % 2 ? 'presentation-step-left' : 'presentation-step-right'}`}>
+                <article
+                  key={step.label}
+                  data-presentation-step={index + 1}
+                  className={`presentation-step ${index % 2 ? 'presentation-step-left' : 'presentation-step-right'}`}
+                >
                   <p className="presentation-label">{step.label}</p>
                   <h2>{step.title}</h2>
-                  {step.description && <p className="presentation-description">{step.description}</p>}
-                  {index === 0 && <p className="presentation-sketch-note"><span>ESKİZ / İLK ÇİZGİLER</span>Hayaliniz, ölçüleri ve mekânları belirleyen bir plana dönüşür.</p>}
+                  {step.description && (
+                    <p className="presentation-description">
+                      {step.description}
+                    </p>
+                  )}
                 </article>
               ))}
             </div>
           </div>
         </div>
       </section>
-      <ProjectInvitation />
     </main>
-  )
+  );
 }
