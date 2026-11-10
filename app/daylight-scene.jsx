@@ -24,9 +24,11 @@ export default function DaylightScene({motion}) {
   })
   return <>
     <hemisphereLight ref={hemi} args={['#e3efff','#4873d4',.8]} />
+    {/* Include the entire facade and wall to keep the projected shadows continuous. */}
     <directionalLight ref={sun} position={[9,6,-4.8]} color="#fff9e6" intensity={2.15} castShadow
-      shadow-mapSize={[2048,2048]} shadow-camera-left={-7} shadow-camera-right={7}
-      shadow-camera-top={6} shadow-camera-bottom={-6} shadow-normalBias={.006} shadow-bias={-.00015} />
+      shadow-mapSize={[4096,4096]} shadow-camera-left={-12} shadow-camera-right={12}
+      shadow-camera-top={10} shadow-camera-bottom={-10} shadow-camera-near={.5} shadow-camera-far={40}
+      shadow-normalBias={.012} shadow-bias={-.00005} />
     <group rotation={[0,.16,0]}>
       {[[-.44,.21],[.73,.035],[.94,.48],[-.27,.57]].map(([x,z],index)=><pointLight key={index} ref={node=>{lamps.current[index]=node}} position={[x,interiorBase+.22,z]} color="#ffbc76" intensity={0} distance={.85} decay={2} />)}
       <group ref={city} position={[0,interiorBase,0]} visible={false}>

@@ -8,7 +8,7 @@ export const projectLines = [
   [[.56, .27], [.56, .63]],
 ]
 export const floorHeight = .285
-export const modelBase = .207
+export const modelBase = .087
 export const storeys = 7
 export const grid = { x: -.675, z: -.61, width: 1.65 / 4, depth: 1.24 / 3 }
 const omissions = [[], ['0:2'], ['0:2','3:0'], ['3:0'], ['3:0','3:2'], ['3:2','0:0'], ['3:2','0:0','0:2']]

@@ -3,28 +3,34 @@ import { useFrame } from '@react-three/fiber'
 import { EdgesGeometry, MathUtils, Plane, Vector3 } from 'three'
 import { IllustrationMaterial } from './illustration'
 import { projectLines } from './project-plan.mjs'
-import { exteriorState } from './exterior-cycle.mjs'
+import { exteriorState, glazingState } from './exterior-cycle.mjs'
 import { dayState } from './day-cycle.mjs'
 import InteriorModel from './interior-model'
 import { openingState, interiorBase, interiorLevel } from './interior-geometry.mjs'
 import { createArchitecture } from './architecture-geometry.mjs'
 
-function ModelBatch({ geometry, kind, finish, clippingPlanes, motion }) {
+function ModelBatch({ geometry, kind, finish, clippingPlanes, motion, level }) {
   const material = useRef(null)
+  const mesh = useRef(null)
+  const glazing = kind.startsWith('recess') || kind === 'glazing-frame'
   useFrame(()=>{
+    if(!glazing)return
+    const installed=glazingState(motion.current.exterior||0,level)
+    mesh.current.visible=installed>.001
+    mesh.current.position.y=(1-installed)*.065
+    material.current.opacity=installed
     if(!kind.startsWith('recess'))return
     const outside=exteriorState(motion.current.exterior||0)
     const strength={recess:1,'recess-dim':.18,'recess-warm':.6}[kind]
     material.current.emissive.set('#ffca8c')
     material.current.emissiveIntensity=outside.windows*.55*strength
-    if(clippingPlanes)material.current.opacity=MathUtils.lerp(1-dayState(motion.current.day||0).enclosure*.96,1,outside.windows)
   })
   const edges = useMemo(() => kind === 'card' ? new EdgesGeometry(geometry, 35) : null, [geometry, kind])
   useEffect(() => () => edges?.dispose(), [edges])
-  const colors = { card: finish, frame: '#b8c9da', recess: '#cedee9', 'recess-dim':'#bdcddd', 'recess-warm':'#d8e0e6', rail: '#6983ac', foliage: '#9caf9d' }
+  const colors = { card: finish, frame: '#b8c9da', 'glazing-frame':'#b8c9da', recess: '#cedee9', 'recess-dim':'#bdcddd', 'recess-warm':'#d8e0e6', rail: '#6983ac', foliage: '#9caf9d' }
   return (
-    <mesh geometry={geometry} castShadow receiveShadow={kind === 'card'}>
-      <IllustrationMaterial ref={material} transparent={Boolean(clippingPlanes && kind.startsWith('recess'))} color={colors[kind]} userData={{ inkStrength: kind === 'card' ? .32 : .65 }} clippingPlanes={clippingPlanes} clipShadows />
+    <mesh ref={mesh} geometry={geometry} visible={!glazing} castShadow={!glazing} receiveShadow={kind === 'card'}>
+      <IllustrationMaterial ref={material} transparent={glazing} opacity={glazing?0:1} depthWrite={!kind.startsWith('recess')} color={colors[kind]} userData={{ inkStrength: kind === 'card' ? .32 : .65 }} clippingPlanes={clippingPlanes} clipShadows />
       {edges && <lineSegments geometry={edges}><lineBasicMaterial color="#58749d" clippingPlanes={clippingPlanes} transparent opacity={.32} depthWrite={false} /></lineSegments>}
     </mesh>
   )
@@ -51,7 +57,7 @@ export default function ArchitectureModel({ motion, finish }) {
   })
   return <group name="opening-architecture">{stages.map((stage,index)=>(
     <group key={stage.name} name={stage.name} position={[0,stage.y,0]} visible={false} ref={node=>{parts.current[index]=node}}>
-      {Object.entries(stage.batches).map(([kind,geometry])=><ModelBatch key={kind} kind={kind} geometry={geometry} finish={finish} motion={motion} clippingPlanes={stage.name === 'storey-4' ? clippingPlanes : undefined} />)}
+      {Object.entries(stage.batches).map(([kind,geometry])=><ModelBatch key={kind} kind={kind} geometry={geometry} finish={finish} motion={motion} level={stage.name.startsWith('storey-')?Number(stage.name.split('-')[1])-1:0} clippingPlanes={stage.name === 'storey-4' ? clippingPlanes : undefined} />)}
     </group>
   ))}<InteriorModel motion={motion} /></group>
 }

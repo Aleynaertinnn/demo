@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { BufferGeometry, CanvasTexture, Vector3, SRGBColorSpace } from 'three'
 import { IllustrationMaterial } from './illustration'
+import { paperOffset } from './atelier-layout.mjs'
 import { projectLines, floorHeight, storeys, grid, footprints, perimeter } from './project-plan.mjs'
 export { projectLines } from './project-plan.mjs'
 
@@ -102,7 +103,7 @@ export function ProjectSketch({ motion }) {
     })
     if(detail.current)detail.current.visible=motion.current.sketch>.35
   })
-  return <group name="architectural-plan">
+  return <group name="architectural-plan" position={[0,paperOffset,0]}>
     <DrawingLines lines={paperGrid} color="#b4c4cc" opacity={.24} height={.200} />
     <DrawingLines lines={dimensions} color={guide} opacity={.6} height={.204} />
     <group ref={detail} visible={false}>
@@ -153,8 +154,8 @@ function Sheet({ position, angle, elevation = false, roof = false }) {
 }
 export default function DraftingSheets(){
   return <>
-    <Sheet position={[-1.35,.215,-.71]} angle={0} />
-    <Sheet position={[1.35,.215,-.71]} angle={-.08} elevation />
-    <Sheet position={[1.39,.211,.57]} angle={.24} roof />
+    <Sheet position={[-1.55,.079,-.9]} angle={0} />
+    <Sheet position={[1.6,.079,-1.1]} angle={-.08} elevation />
+    <Sheet position={[1.7,.079,.78]} angle={.24} roof />
   </>
 }

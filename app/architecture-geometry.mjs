@@ -44,10 +44,10 @@ export function createArchitecture(projectLines) {
       const left=point((i+.14)/bays),right=point((i+.86)/bays)
       const pane=['recess','recess-dim','recess-warm'][Math.abs(i+part.name.length+Math.round(a[0]*10))%3]
       lineBox(part,pane,left,right,.09,.132,.002)
-      lineBox(part,'frame',left,right,.083,.006,.022)
-      lineBox(part,'frame',left,right,.226,.004,.014)
+      lineBox(part,'glazing-frame',left,right,.083,.006,.022)
+      lineBox(part,'glazing-frame',left,right,.226,.004,.014)
       const middle=point((i+.5)/bays)
-      lineBox(part,'frame',middle,[middle[0]+.002,middle[1]+.002],.086,.141,.006)
+      lineBox(part,'glazing-frame',middle,[middle[0]+.002,middle[1]+.002],.086,.141,.006)
     }
   }
   const order=[projectLines.length-1,...projectLines.slice(0,-1).map((_,i)=>i)]
@@ -99,7 +99,9 @@ export function createArchitecture(projectLines) {
       box(part,'foliage',x0+(x+.5)*cellX,.075,z0+(z+.25)*cellZ,.115,.012,.05)
     })
     // Separate recessed circulation core and landing, ready for a future cutaway.
-    box(part,'card',.1,.144,-.12,.012,.25,.32)
+    // Continue the drawing's door opening through the circulation-core lining.
+    box(part,'card',.1,.144,-.23,.012,.25,.10)
+    box(part,'card',.1,.25,-.07,.012,.035,.22)
     for(let step=0;step<9;step++)box(part,'card',-.06,.018+step*.014,-.23+step*.025,.17,.014,.025)
   }
   const roof=stage('removable-roof',modelBase+storeys*floorHeight,.87,.95)
