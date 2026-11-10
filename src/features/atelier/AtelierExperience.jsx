@@ -3,7 +3,7 @@
 import useScrollJourney from './animation/use-scroll-journey'
 import { sceneLabels } from './config/journey.mjs'
 import AtelierCanvas from './scene/AtelierCanvas'
-import Intro from './components/Intro'
+import HeroIntro from '@/components/home/HeroIntro'
 import SceneCaption from './components/SceneCaption'
 import FinaleCaption from './components/FinaleCaption'
 
@@ -12,7 +12,7 @@ export default function AtelierExperience() {
   return (
     <main className="atelier-experience">
       <section id="surec" aria-label="Bir proje nasıl ilerler?">
-        <Intro />
+        <HeroIntro />
         <div className="atelier-journey" ref={journey.journey}>
           <figure className="atelier-frame">
             <div className="viewport" ref={journey.viewport}>
