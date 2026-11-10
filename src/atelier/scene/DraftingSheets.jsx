@@ -76,20 +76,30 @@ for(const [a,b] of perimeter(footprints.at(-1))) {
   for(let i=0;i<count;i+=2)projected.push([[a[0]+(b[0]-a[0])*i/count,a[1]+(b[1]-a[1])*i/count],[a[0]+(b[0]-a[0])*(i+1)/count,a[1]+(b[1]-a[1])*(i+1)/count]])
 }
 function PlanLabels() {
-  const texture=useMemo(()=>{
+  const {texture,redraw,family}=useMemo(()=>{
     const canvas=document.createElement('canvas');canvas.width=1536;canvas.height=1024
     const ctx=canvas.getContext('2d')
-    const text=(value,x,z,size=17)=>{ctx.font=`${size}px monospace`;ctx.fillStyle='#395b83';ctx.fillText(value,(x+1.4)/3.1*1536,(z+.94)/1.9*1024)}
-    text('KAGIT ATOLYESI / 07 KAT',-.55,.91,19)
-    text('ZEMIN KAT PLANI',-.55,.86,18);text('1:100   /   A-01',.57,.86,16)
-    for(let i=0;i<4;i++)text('4.125',grid.x+(i+.29)*grid.width,-.83,15)
-    text('16.50',-.01,-.92,16);text('12.40',1.19,.02,16)
-    text('SALON',-.5,-.27,16);text('YASAM / 24 m2',.29,-.12,15);text('GIRIS',.27,.49,14)
-    text('N',1.3,-.68,20);text('0     2     4 m',-.98,.85,14)
+    const family=getComputedStyle(document.documentElement).getPropertyValue('--font-notes').trim() || 'cursive'
+    const text=(value,x,z,size=17)=>{ctx.font=`${size}px ${family}, cursive`;ctx.fillStyle='#395b83';ctx.fillText(value,(x+1.4)/3.1*1536,(z+.94)/1.9*1024)}
     const texture=new CanvasTexture(canvas);texture.colorSpace=SRGBColorSpace
-    return texture
+    const redraw=()=>{
+      ctx.clearRect(0,0,canvas.width,canvas.height)
+      text('KAGIT ATOLYESI / 07 KAT',-.55,.91,19)
+      text('ZEMIN KAT PLANI',-.55,.86,18);text('1:100   /   A-01',.57,.86,16)
+      for(let i=0;i<4;i++)text('4.125',grid.x+(i+.29)*grid.width,-.83,15)
+      text('16.50',-.01,-.92,16);text('12.40',1.19,.02,16)
+      text('SALON',-.5,-.27,16);text('YASAM / 24 m2',.29,-.12,15);text('GIRIS',.27,.49,14)
+      text('N',1.3,-.68,20);text('0     2     4 m',-.98,.85,14)
+      texture.needsUpdate=true
+    }
+    redraw()
+    return {texture,redraw,family}
   },[])
-  useEffect(()=>()=>texture.dispose(),[texture])
+  useEffect(()=>{
+    let active=true
+    document.fonts.load(`17px ${family}`).then(()=>{if(active)redraw()})
+    return ()=>{active=false;texture.dispose()}
+  },[texture,redraw,family])
   return <mesh position={[.15,.209,.01]} rotation={[-Math.PI/2,0,0]}><planeGeometry args={[3.1,1.9]} /><meshBasicMaterial map={texture} transparent depthWrite={false} polygonOffset polygonOffsetFactor={-1} /></mesh>
 }
 

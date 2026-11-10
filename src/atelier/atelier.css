@@ -1,8 +1,7 @@
 .atelier-experience { max-width: 1440px; padding: 0 clamp(20px, 5vw, 78px) 28px; margin: auto; }
-.atelier-experience header, .atelier-experience figcaption { display: flex; justify-content: space-between; align-items: center; gap: 16px; font: 600 .72rem ui-monospace, monospace; }
-.atelier-experience header { border-bottom: 1px solid #7089ad45; min-height: 64px; }
+.atelier-experience figcaption { display: flex; justify-content: space-between; align-items: center; gap: 16px; font: 600 .72rem var(--font-body), sans-serif; }
 .intro { margin: clamp(24px, 5vh, 56px) 0 22px; }
-.index { font: 700 .75rem ui-monospace, monospace; color: #2452c7; }
+.index, .sketch-note { font: 400 .9rem/1.4 var(--font-notes), cursive; color: #2452c7; }
 .atelier-experience h1 { margin: 8px 0 12px; font-size: clamp(3rem, 8vw, 7.5rem); line-height: .86; letter-spacing: -.055em; }
 .atelier-experience figure { margin: 0; }
 .viewport { height: clamp(300px, 51svh, 660px); border: 1px solid #233d72; background: #e3ebf1; }
@@ -38,7 +37,8 @@
 
 .interior-caption { position: absolute; left: 20px; bottom: 20px; max-width: calc(100% - 40px); padding: 12px 16px; background: #fbf9efe8; border: 1px solid #7089ad45; pointer-events: none; }
 .interior-caption p { margin: 4px 0; font-size: .75rem; }
-.interior-caption strong { font-size: 1.1rem; }
+.interior-caption .index { font-size: .9rem; }
+.interior-caption strong { font-family: var(--font-heading), sans-serif; font-size: 1.1rem; }
 .finale-caption { position: absolute; left: 24px; bottom: 24px; padding: 16px 20px; color: #233d72; background: #fbf9eff2; border: 1px solid #7089ad45; max-width: calc(100% - 48px); }
 .finale-caption h2 { margin: 8px 0 18px; font-size: clamp(1.5rem,3.5vw,3rem); line-height: 1.05; letter-spacing: -.04em; }
 .finale-caption button { font-size: .8rem; }

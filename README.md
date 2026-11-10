@@ -23,6 +23,7 @@ npm run start    # Derlenen siteyi çalıştırır
 
 ```text
 app/                         Next.js sayfası, kök layout ve genel stiller
+components/                  Site genelinde kullanılabilen Header gibi bileşenler
 features/atelier/
   AtelierExperience.jsx      Deneyimin istemci giriş noktası
   atelier.css                Atölyeye ait arayüz stilleri
@@ -68,3 +69,14 @@ npm run models -- sofa small-bookcase
 
 Üretici ve web sahnesi aynı ölçü ve model yolu yapılandırmasını kullanır.
 Modellerin ayrıntıları için [model açıklamalarına](public/models/README.md) bakın.
+
+## Tipografi
+
+Fontlar `app/fonts/` altında lisanslarıyla birlikte saklanır; `next/font/local`
+ile sunulur. `app/layout.jsx` içindeki CSS değişkenleri:
+
+- `--font-heading`: Space Grotesk — ana ve bölüm başlıkları.
+- `--font-body`: DM Sans — menü, paragraflar ve proje bilgileri.
+- `--font-notes`: Architects Daughter — başlık üstü açıklamalar ve eskiz notları.
+
+3D paftalardaki yazı dokuları da not fontunun yüklenmesini izler.

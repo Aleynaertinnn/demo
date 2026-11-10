@@ -1,0 +1,6 @@
+:root { color: #233d72; background: #f6f3e8; }
+body { font-family: var(--font-body), sans-serif; }
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading), sans-serif; }
+button, input, select, textarea { font: inherit; }
+* { box-sizing: border-box; }
+body { margin: 0; background-image: linear-gradient(#6886a312 1px, transparent 1px), linear-gradient(90deg, #6886a312 1px, transparent 1px); background-size: 20px 20px; }
