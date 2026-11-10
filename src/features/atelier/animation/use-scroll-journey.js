@@ -1,10 +1,12 @@
 import { useLayoutEffect, useRef, useState } from 'react'
+import { useLenis } from 'lenis/react'
 import { MathUtils } from 'three'
 import { atelierPose, constructionPose, interiorPose, designPose, dayPose, exteriorPose, finalePose } from './camera-poses.mjs'
 import { designAtProgress } from '../config/interior-designs.mjs'
 import { sketchStart, exteriorStart, finaleStart, lifeStart, designStart, interiorStart, modelStart } from '../config/journey.mjs'
 
 export default function useScrollJourney() {
+  const lenis = useLenis()
   const viewport = useRef(null)
   const journey = useRef(null)
   const motion = useRef(atelierPose(0))
@@ -61,7 +63,8 @@ export default function useScrollJourney() {
     setInteriorProgress(0)
     motion.current.finale=0
     setFinaleProgress(0)
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    if (lenis) lenis.scrollTo(0, { immediate: true, force: true })
+    else window.scrollTo({ top: 0, behavior: 'instant' })
     setTake(value => value + 1)
   }
 

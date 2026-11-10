@@ -1,5 +1,7 @@
 import localFont from 'next/font/local'
 import Header from '@/components/layout/Header'
+import SmoothScroll from '@/components/layout/SmoothScroll'
+import 'lenis/dist/lenis.css'
 import './globals.css'
 import '@/features/atelier/atelier.css'
 
@@ -10,5 +12,5 @@ const body = localFont({ src: './fonts/DMSans-Variable.ttf', variable: '--font-b
 const notes = localFont({ src: './fonts/ArchitectsDaughter-Regular.ttf', variable: '--font-notes', weight: '400', display: 'swap' })
 
 export default function Layout({ children }) {
-  return <html lang="tr" className={`${headings.variable} ${body.variable} ${notes.variable}`}><body><Header />{children}</body></html>
+  return <html lang="tr" className={`${headings.variable} ${body.variable} ${notes.variable}`}><body><SmoothScroll /><Header />{children}</body></html>
 }
