@@ -25,9 +25,7 @@ function CornerMark() {
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuButton = useRef<HTMLButtonElement>(null)
-  const { collapsed, hidden } = useHeaderScroll()
-  const [hasFocus, setHasFocus] = useState(false)
-  const isHidden = hidden && !menuOpen && !hasFocus
+  const { collapsed } = useHeaderScroll()
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -41,10 +39,8 @@ export default function Header() {
   }, [menuOpen])
 
   return (
-    <header data-collapsed={collapsed} data-hidden={isHidden} inert={isHidden}
-      onFocusCapture={() => setHasFocus(true)}
-      onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setHasFocus(false) }}
-      className={`sticky top-3 z-50 mx-3 mt-3 border border-solid border-line/40 bg-paper font-sans text-ink transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none md:top-4 md:mx-5 md:mt-4 ${isHidden ? '-translate-y-[calc(100%+2rem)] pointer-events-none' : 'translate-y-0'}`}>
+    <header data-collapsed={collapsed}
+      className="sticky top-3 z-50 mx-3 mt-3 border border-solid border-line/40 bg-paper font-sans text-ink md:top-4 md:mx-5 md:mt-4">
       <div className="grid grid-cols-[minmax(0,1fr)_auto]">
         <Link href="/" aria-label="Uluk Mimarlık — Anasayfa" onClick={() => setMenuOpen(false)}
           className="group/logo flex min-h-16 items-center px-4 py-2 text-ink no-underline focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-brand lg:px-6">
