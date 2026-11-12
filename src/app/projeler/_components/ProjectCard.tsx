@@ -50,7 +50,7 @@ export default function ProjectCard({
         </span>
       </button>
       <div className="border-0 border-t border-dashed border-line/35 px-[clamp(16px,1.8vw,28px)] pt-[26px] pb-[30px]">
-        <h3 className="uppercase m-0 min-h-[3.2em] max-w-[13ch] text-[clamp(23px,1vw,15px)] leading-[1.06] font-medium tracking-[-.055em] max-[1000px]:min-h-[2.2em] max-[1000px]:text-[30px] max-[600px]:min-h-0 max-[600px]:max-w-[17ch]">
+        <h3 className="text-brand uppercase m-0 min-h-[3.2em] max-w-[13ch] text-[clamp(23px,1vw,15px)] leading-[1.06] font-medium tracking-[-.055em] max-[1000px]:min-h-[2.2em] max-[1000px]:text-[30px] max-[600px]:min-h-0 max-[600px]:max-w-[17ch]">
           <Link
             href={`/projeler/${project.slug}`}
             className="text-inherit no-underline hover:text-brand focus-visible:outline-2 focus-visible:outline-brand"

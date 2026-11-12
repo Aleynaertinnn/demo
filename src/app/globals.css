@@ -16,7 +16,6 @@
   --color-border: var(--color-line);
 }
 
-/* Shared cream paper / blue ink palette for every page and component. */
 @theme {
   --color-ink: #233d72;
   --color-ink-muted: #58749d;
