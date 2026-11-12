@@ -7,7 +7,7 @@ import '@/features/atelier/atelier.css';
 
 export const metadata = {
   title: 'Kâğıt Atölyesi',
-  description: 'Bir eskizden 3D sahneye.',
+  description: 'Uluk Mimarlık: yaşamınıza uyum sağlayan mimari ve iç mekân tasarımları.',
 };
 
 const headings = localFont({

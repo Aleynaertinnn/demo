@@ -14,7 +14,7 @@ export const presentationSteps = [
     label: '02 / FİKİR ŞEKİLLENİR',
     title: 'Fikriniz boyut kazanır.',
     description:
-      'Eskizleri üç boyuta taşır, mekânın biçimini, oranlarını ve çevresiyle ilişkisini geliştiririz.',
+      'Tasarımı üç boyutta ele alır, mekânın biçimini, oranlarını ve çevresiyle ilişkisini geliştiririz.',
     start: modelStart,
     end: interiorStart,
   },
