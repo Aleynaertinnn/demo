@@ -8,7 +8,7 @@ import HeroIntro from '@/components/home/HeroIntro';
 export default function AtelierExperience() {
   const { journey, frame, motion } = useScrollJourney();
   return (
-    <main className="atelier-experience">
+    <div className="atelier-experience">
       <section id="surec" aria-label="Bir proje nasıl ilerler?">
         <HeroIntro />
         <div className="atelier-journey" ref={journey}>
@@ -37,6 +37,6 @@ export default function AtelierExperience() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

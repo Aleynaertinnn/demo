@@ -12,7 +12,6 @@
   position: sticky;
   top: var(--header-offset);
   height: calc(var(--initial-height) + (var(--available-height) - var(--initial-height)) * var(--expansion));
-  background: var(--color-paper);
   overflow: hidden;
 }
 .atelier-frame .viewport {

@@ -40,7 +40,7 @@ public/models/
 scripts/models/              GLB modellerini üreten kaynak kod
 ```
 
-`app/page.jsx` yalnızca atölye deneyimini çağırır. Bütün 3D içerik aynı Canvas içinde
+`src/app/page.jsx` atölye deneyimini ve proje vitrinini çağırır. Bütün 3D içerik aynı Canvas içinde
 kalır; animasyonlar sayfanın kaydırma ilerlemesinden hesaplanır. Yukarı kaydırma
 sahneleri geri alır. **Başa dön** akışı sıfırlar. İşletim sisteminde hareket azaltma
 tercihi açıksa doğrudan final gösterilir.
@@ -126,8 +126,16 @@ Ortak header kök layout'ta yer alır. Logo, `public/images/uluk-mimarlik-u-logo
 dosyasından gelir; marka adı metindir. Masaüstünde hücreli menü, mobilde açılır menü kullanılır.
 
 - Logo: `/`
-- Projeler: `/projeler` (sayfa içeriği sonraki adımda hazırlanacak)
+- Projeler: `/projeler`; proje detayları `/projeler/[slug]` altında sunulur.
 - Ofis: `/ofis` (sayfa içeriği sonraki adımda hazırlanacak)
 - Hizmetler: `/#hizmetler` (anasayfa bölümü sonraki adımda hazırlanacak)
 - Süreç: `/#surec` (mevcut Three.js deneyimi)
 - Projenizi konuşalım: `/iletisim` (sayfa içeriği sonraki adımda hazırlanacak)
+
+## Projeler
+
+Proje verileri `src/constants/projects.ts` içinde tutulur. Ana sayfa ve
+`src/app/projeler/page.tsx` ortak `ProjectsSection` bileşenini kullanır.
+Liste ve detay bileşenlerinin tamamı `src/app/projeler/_components/` altındadır;
+stilleri Tailwind sınıflarıyla tanımlanır. `src/app/projeler/[slug]/page.tsx`
+mevcut veriden detay sayfalarını oluşturur; bilinmeyen proje adresleri 404 döndürür.
