@@ -63,12 +63,7 @@ export default function ProjectCard({
         <p className="mt-4 mb-6 max-w-[34ch] text-[13px] leading-[1.65] text-ink-muted">
           {project.description}
         </p>
-        <div className="mt-auto flex items-end justify-between gap-3 border-0 border-t border-solid border-line/25 pt-3">
-          <span aria-hidden="true" className="text-[9px] tracking-[.1em] text-ink-muted tabular-nums">P / {String(index + 1).padStart(2, '0')}</span>
-          <Link href={`/projeler/${project.slug}`} aria-label={`${project.title} Proje detayını incele`} className="relative z-20 border border-solid border-line/50 px-2.5 py-2 text-[8px] leading-none tracking-[.12em] text-ink no-underline transition-colors hover:border-ink hover:bg-ink hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand motion-reduce:transition-none">
-            ULUK / PROJELER <span aria-hidden="true" className="ml-1">↗</span>
-          </Link>
-        </div>
+        
       </div>
     </article>
   );

@@ -5,7 +5,7 @@ export default function HeroIntro() {
         MİMARİ BİR FİKİR <span aria-hidden="true" className="inline-block text-[1.35em]">↗</span>
       </p>
       <div className="w-full max-w-[1100px]">
-        <h1 className="m-0 text-[clamp(3rem,6.5vw,7rem)] leading-[.95] font-semibold tracking-[-.06em] max-[700px]:text-[clamp(2.25rem,9vw,4rem)]">Bugünün fikri,
+        <h1 className="m-0 text-brand text-[clamp(3rem,6.5vw,7rem)] leading-[.95] font-semibold tracking-[-.06em] max-[700px]:text-[clamp(2.25rem,9vw,4rem)]">Bugünün fikri,
 yarının yaşam alanı.</h1>
         <p className="mx-auto mt-4 mb-0 max-w-[42ch] font-sans text-sm leading-relaxed text-ink-muted sm:text-base">Bir fikrin çizimden yaşama uzanan yolculuğunu keşfedin.</p>
       </div>

@@ -51,3 +51,10 @@ export const projects: readonly Project[] = [
     alt: 'Kemerli açıklıkları, ahşap kepenkleri ve yeşil teraslarıyla taş konut',
   },
 ];
+
+export const projectsIntro = {
+  eyebrow: 'SEÇİLİ PROJELER',
+  title: 'Yaşama alan açan mekânlar.',
+  titleLines: ['Yaşama alan açan', 'mekânlar.'],
+  noteLines: ['İhtiyaçlarınıza göre tasarlanır.', 'Yaşamınıza uyum sağlar.'],
+} as const;

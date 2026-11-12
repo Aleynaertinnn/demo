@@ -1,4 +1,4 @@
-import ProjectsSection from '../../components/home/ProjectsSection';
+import ProjectsSection from '@/components/home/projects/ProjectsSection';
 
 export const metadata = {
   title: 'Projeler | Uluk Mimarlık',

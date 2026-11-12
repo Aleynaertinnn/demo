@@ -1,5 +1,5 @@
 import AtelierExperience from '@/features/atelier/AtelierExperience';
-import ProjectsSection from '@/components/home/ProjectsSection';
+import ProjectsSection from '@/components/home/projects/ProjectsSection';
 import FounderSection from '@/components/home/founder/FounderSection';
 import ServicesIntro from '@/components/home/services/ServicesIntro';
 import ServicesExperience from '@/components/home/services/ServicesExperience';

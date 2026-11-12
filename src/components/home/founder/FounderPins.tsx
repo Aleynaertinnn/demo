@@ -1,24 +1,28 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useContext, useId, useState } from 'react';
+import { FounderPinContext } from './FounderReveal';
 import { founder } from '@/constants/founder';
 
 export default function FounderPins({ index, className = '' }: { index: number; className?: string }) {
-  const [open, setOpen] = useState(false);
+  const [manualOpen, setOpen] = useState(false);
+  const { demoIndex, cancelDemo } = useContext(FounderPinContext);
+  const open = manualOpen || demoIndex === index;
   const tooltipId = useId();
   const pin = founder.pins[index];
   const opensLeft = index % 2 === 1;
 
   return (
     <span className={`absolute z-20 -translate-x-1/2 -translate-y-1/2 text-left font-sans text-sm leading-normal font-normal tracking-normal normal-case ${className}`}
-      onPointerEnter={event => { if (event.pointerType === 'mouse') setOpen(true); }}
+      onPointerEnter={event => { if (event.pointerType === 'mouse') { cancelDemo(); setOpen(true); } }}
       onPointerLeave={event => { if (event.pointerType === 'mouse') setOpen(false); }}
-      onKeyDown={event => { if (event.key === 'Escape') { setOpen(false); event.stopPropagation(); } }}
+      onKeyDown={event => { if (event.key === 'Escape') { cancelDemo(); setOpen(false); event.stopPropagation(); } }}
     >
       <button type="button" aria-label={pin.title} aria-expanded={open} aria-controls={tooltipId} aria-describedby={open ? tooltipId : undefined}
-        onFocus={event => { if (event.currentTarget.matches(':focus-visible')) setOpen(true); }}
+        onFocus={event => { if (event.currentTarget.matches(':focus-visible')) { cancelDemo(); setOpen(true); } }}
         onBlur={() => setOpen(false)}
         onClick={event => {
+          cancelDemo();
           const pointerType = (event.nativeEvent as PointerEvent).pointerType;
           if (pointerType === 'mouse') setOpen(true);
           else setOpen(current => !current);
