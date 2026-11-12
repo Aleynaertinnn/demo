@@ -13,8 +13,8 @@ const focus = 'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visi
 
 export default function Footer() {
   return (
-    <footer aria-label="Site alt bilgisi" className="mx-3 mt-10 mb-3 bg-ink px-6 pt-10 pb-5 text-paper sm:mx-5 sm:mb-5 sm:px-10 sm:pt-12">
-      <div className="relative grid gap-9 border-0 border-b border-solid border-paper/25 pb-8 md:grid-cols-[1.4fr_.8fr_1fr] md:gap-12 md:pb-10">
+    <footer aria-label="Site alt bilgisi" className="relative mx-3 mt-10 mb-3 bg-ink [body:has([data-contact-cta])_&]:mt-0 px-6 pt-10 pb-5 text-paper sm:mx-5 sm:mb-5 sm:px-10 sm:pt-12">
+      <div className="relative grid gap-9 border-0 border-b border-solid border-paper/25 pb-8 md:grid-cols-[1.4fr_1fr] md:gap-12 md:pb-10">
         <div>
           <Link href="/" aria-label="Uluk Mimarlık — Anasayfa" className={`inline-flex items-center gap-3 text-paper no-underline ${focus}`}>
             <Image src={footer.logo} alt="" width={40} height={40} className="h-9 w-9 brightness-0 invert" />
@@ -26,7 +26,7 @@ export default function Footer() {
 
         <nav aria-label="Alt menü" className="border-0 border-t border-solid border-paper/20 pt-5 md:border-t-0 md:border-l md:pl-8 md:pt-0">
           <p className="mt-0 mb-4 text-[9px] leading-relaxed tracking-[.15em] text-paper/60">{footer.navigationLabel}</p>
-          <ul className="m-0 grid list-none grid-cols-2 gap-x-6 gap-y-3 p-0 md:grid-cols-1">
+          <ul className="m-0 grid list-none grid-cols-2 gap-x-6 gap-y-3 p-0 md:grid-cols-2">
             {navigation.map((item, index) => (
               <li key={item.href}>
                 <Link href={item.href} prefetch={false} className={`group inline-flex min-h-7 items-center gap-3 text-sm text-paper no-underline ${focus}`}>
@@ -39,14 +39,6 @@ export default function Footer() {
           </ul>
         </nav>
 
-        <div className="border-0 border-t border-solid border-paper/20 pt-5 md:border-t-0 md:border-l md:pl-8 md:pt-0">
-          <p className="mt-0 mb-3 font-display text-[clamp(23px,2.2vw,32px)] leading-tight font-medium tracking-[-.045em]">{footer.invitation}</p>
-          <p className="mt-0 mb-5 max-w-[29ch] text-xs leading-relaxed text-paper/65">{footer.invitationDescription}</p>
-          <Link href={footer.contact.href} prefetch={false} className={`group inline-flex min-h-11 items-center gap-5 border-0 border-b border-solid border-paper/50 pb-2 text-[10px] tracking-[.06em] text-paper uppercase no-underline transition-colors hover:border-paper ${focus}`}>
-            {footer.contact.label}
-            <Icon icon={arrowUpRight} width={18} height={18} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none" />
-          </Link>
-        </div>
         <Icon icon={plus} width={12} height={12} className="absolute -bottom-1.5 -left-1.5 text-paper/70" />
         <Icon icon={plus} width={12} height={12} className="absolute -right-1.5 -bottom-1.5 text-paper/70" />
       </div>

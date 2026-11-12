@@ -5,7 +5,6 @@ import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { contactCta } from '@/constants/contact-cta';
-import CtaFrame from './CtaFrame';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,8 +22,8 @@ export default function CtaArtwork() {
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: artwork.current,
-          start: 'top 85%',
-          end: 'bottom 95%',
+          start: 'top 60%',
+          end: 'top 25%',
           scrub: .6,
           invalidateOnRefresh: true,
         },
@@ -39,8 +38,7 @@ export default function CtaArtwork() {
   }, []);
 
   return (
-    <figure className="relative mx-auto mt-4 mb-0 w-[min(100%,60svh)]">
-      <CtaFrame area="artwork" />
+    <figure className="relative mx-auto mt-6 mb-0 w-[min(100%,60svh)]">
       <div ref={artwork} className="relative isolate aspect-[1672/941]">
         <Image src={contactCta.artwork.drawing} alt={contactCta.artwork.alt} fill sizes="(max-width: 640px) 100vw, 60vh" className="object-contain" />
         <div ref={color} aria-hidden="true" className="absolute inset-0">
