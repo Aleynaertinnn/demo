@@ -3,6 +3,7 @@ import ProjectsSection from '@/components/home/ProjectsSection';
 import FounderSection from '@/components/home/founder/FounderSection';
 import ServicesIntro from '@/components/home/services/ServicesIntro';
 import ServicesExperience from '@/components/home/services/ServicesExperience';
+import ContactCta from '@/components/home/contact-cta/ContactCta';
 
 export default function Page() {
   return (
@@ -13,6 +14,7 @@ export default function Page() {
       <ServicesExperience>
         <ServicesIntro />
       </ServicesExperience>
+      <ContactCta />
     </main>
   );
 }
