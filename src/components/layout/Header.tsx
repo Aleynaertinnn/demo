@@ -9,12 +9,7 @@ import Icon from '@/components/ui/Icon'
 import VisitButton from '@/components/ui/VisitButton'
 import useHeaderScroll from '@/hooks/useHeaderScroll'
 
-const navigation = [
-  { label: 'Projeler', href: '/projeler' },
-  { label: 'Ofis', href: '/ofis' },
-  { label: 'Hizmetler', href: '/#hizmetler' },
-  { label: 'Süreç', href: '/#surec' },
-]
+import { navigation } from '@/constants/navigation'
 
 const cellClass = 'group relative flex min-h-16 box-border items-start border-0 border-l border-solid border-line/40 px-5 py-3 font-sans text-[0.75rem] font-medium uppercase leading-normal no-underline transition-colors hover:bg-brand/5 hover:text-brand focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-brand'
 

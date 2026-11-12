@@ -1,5 +1,6 @@
 import localFont from 'next/font/local';
 import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/footer/Footer';
 import SmoothScroll from '@/components/layout/SmoothScroll';
 import 'lenis/dist/lenis.css';
 import './globals.css';
@@ -41,10 +42,11 @@ export default function Layout({ children }) {
       lang="tr"
       className={`${headings.variable} ${logo.variable} ${body.variable} ${notes.variable}`}
     >
-      <body>
+      <body id="sayfa-basi">
         <SmoothScroll />
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
