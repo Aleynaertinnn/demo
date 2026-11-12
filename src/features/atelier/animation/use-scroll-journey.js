@@ -1,4 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { createCaptionTimelines } from './caption-timelines'
 import { MathUtils } from 'three'
 import { atelierPose, constructionPose, interiorPose, designPose, dayPose, exteriorPose, finalePose } from './camera-poses.mjs'
 import { designAtProgress } from '../config/interior-designs.mjs'
@@ -34,6 +36,12 @@ export default function useScrollJourney() {
     const header = document.querySelector('body > header')
     const panels = [...container.querySelectorAll('[data-presentation-step]')]
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const captionMedia = gsap.matchMedia()
+    let captionTimelines = []
+    captionMedia.add('(prefers-reduced-motion: no-preference)', () => {
+      captionTimelines = createCaptionTimelines(panels, presentationSteps)
+      return () => { captionTimelines = [] }
+    })
     let raf = 0
     let active = -1
 
@@ -61,14 +69,10 @@ export default function useScrollJourney() {
       const step = presentationSteps[index]
       const part = step.finale ? smooth(local, .10, .80) : smooth(local, .16, .86)
       const timeline = MathUtils.lerp(step.start, step.end, part)
-      const isMobile = window.matchMedia('(max-width: 700px)').matches
       // The last composition stays in place until the sticky section scrolls away.
-      const panelOpacity = smooth(local, .08, .22) * (step.finale ? 1 : 1 - smooth(local, .78, .90))
       const split = smooth(local, .03, .18) * (step.finale ? 1 : 1 - smooth(local, .87, .98))
       const sceneShare = 1 - .35 * split
       const sceneLeft = index % 2 ? 1 - sceneShare : 0
-      const direction = index % 2 ? -1 : 1
-      const shift = direction * (isMobile ? 12 : 32) * (1 - smooth(local, .08, .22))
 
       container.style.setProperty('--header-offset', `${stickyTop}px`)
       container.style.setProperty('--available-height', `${available}px`)
@@ -81,8 +85,7 @@ export default function useScrollJourney() {
       else Object.assign(motion.current, { finale: 0 }, atelierPose(0))
       container.style.setProperty('--sketch-note-opacity', reduced ? 1 : smooth(motion.current.sketch || 0, .02, .2))
       panels.forEach((panel, i) => {
-        panel.style.setProperty('--panel-opacity', i === index ? panelOpacity : 0)
-        panel.style.setProperty('--panel-shift', `${i === index ? shift : 0}px`)
+        captionTimelines[i]?.progress(i === index ? local : 0)
         if (!reduced && i !== active) panel.setAttribute('aria-hidden', i === index && expansion >= .99 ? 'false' : 'true')
       })
       const visible = expansion >= .99 && !reduced ? index : -1
@@ -102,6 +105,7 @@ export default function useScrollJourney() {
     preference.addEventListener('change', schedule)
     update()
     return () => {
+      captionMedia.revert()
       cancelAnimationFrame(raf)
       observer.disconnect()
       window.removeEventListener('scroll', schedule)

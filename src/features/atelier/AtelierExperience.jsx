@@ -4,6 +4,7 @@ import useScrollJourney from './animation/use-scroll-journey';
 import { presentationSteps } from './config/presentation.mjs';
 import AtelierCanvas from './scene/AtelierCanvas';
 import HeroIntro from '@/components/home/HeroIntro';
+import PresentationCaption from './components/PresentationCaption';
 
 export default function AtelierExperience() {
   const { journey, frame, motion } = useScrollJourney();
@@ -19,19 +20,7 @@ export default function AtelierExperience() {
             </div>
             <div className="presentation-copy">
               {presentationSteps.map((step, index) => (
-                <article
-                  key={step.label}
-                  data-presentation-step={index + 1}
-                  className={`presentation-step ${index % 2 ? 'presentation-step-left' : 'presentation-step-right'}`}
-                >
-                  <p className="presentation-label">{step.label}</p>
-                  <h2>{step.title}</h2>
-                  {step.description && (
-                    <p className="presentation-description">
-                      {step.description}
-                    </p>
-                  )}
-                </article>
+                <PresentationCaption key={step.label} step={step} index={index} />
               ))}
             </div>
           </div>
