@@ -5,7 +5,7 @@ import CtaFrame from './CtaFrame';
 
 export default function ContactCta() {
   return (
-    <section data-contact-cta aria-labelledby="contact-cta-heading" className="relative mx-3 mt-8 flex min-h-[calc(100svh-110px)] flex-col items-center justify-end pt-[clamp(16px,3svh,28px)] text-ink sm:mx-5">
+    <section data-contact-cta aria-labelledby="contact-cta-heading" className="relative mx-3  flex min-h-[calc(100svh-110px)] flex-col items-center justify-center pt-[clamp(16px,3svh,28px)] text-ink sm:mx-5">
       <CtaFrame />
       <div className="relative mx-auto w-full max-w-4xl px-5 text-center">
         <p className="mt-0 mb-3 font-handwritten text-[10px] leading-relaxed tracking-[.06em] text-ink-muted">{contactCta.eyebrow}</p>

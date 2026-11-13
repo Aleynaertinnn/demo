@@ -3,7 +3,7 @@ export const servicesIntro = {
   title: ['Fikrinizden,', 'yaşadığınız mekâna.'],
   description:
     'İhtiyaçlarınızı dinliyor, mekânın potansiyelini birlikte keşfediyoruz. Mimari tasarımdan iç mekâna, malzeme seçiminden uygulama detaylarına kadar her adımı aynı özenle ele alıyor; estetiği, işlevi ve bütçenizi bir arada düşünüyoruz.',
-  images: ['/images/bg-1.webp', '/images/bg-2.webp'],
+  images: ['/images/services/background-left.webp', '/images/services/background-right.webp'],
 } as const;
 
 export const services = [

@@ -1,9 +1,9 @@
-import { modelPaths } from '../../features/atelier/config/assets.mjs'
+import { modelPaths } from '../../src/features/atelier/config/assets.mjs'
 import { mkdir, writeFile } from 'node:fs/promises'
 import * as T from 'three'
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
-import { deskLayout, atelierLayout } from '../../features/atelier/config/layout.mjs'
+import { deskLayout, atelierLayout } from '../../src/features/atelier/config/layout.mjs'
 import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js'
 
 // GLTFExporter uses the browser FileReader API; these assets have no external textures.
@@ -578,7 +578,7 @@ const requested = process.argv.slice(2)
 for (const [name, build] of [['desk',desk],['chair',chair],['lamp',lamp],['cabinet',cabinet],['plant',plant],['window',windowModel],['pencil-holder',pencilHolder],['architect',seatedArchitect],['sofa',officeSofa],['small-bookcase',smallBookcase],['door',officeDoor]].filter(([name])=>!requested.length||requested.includes(name))) {
   const model=build();model.updateMatrixWorld(true)
   const binary=await new GLTFExporter().parseAsync(model,{binary:true,onlyVisible:true})
-  const output = new URL(`../../../public${modelPaths[name]}`, import.meta.url)
+  const output = new URL(`../../public${modelPaths[name]}`, import.meta.url)
   await mkdir(new URL('.', output), { recursive: true })
   await writeFile(output, Buffer.from(binary))
   let triangles=0;model.traverse(node=>{if(node.isMesh) triangles+=(node.geometry.index?.count??node.geometry.attributes.position.count)/3})

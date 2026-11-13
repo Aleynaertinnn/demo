@@ -14,8 +14,7 @@ export default function CtaFrame({ divider = false }: { divider?: boolean }) {
   }
 
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 border border-solid border-ink/35">
-      {corners.map(position => <Icon key={position} icon={plus} width={14} height={14} className={`absolute text-ink/80 ${position}`} />)}
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 ">
       <span className="absolute inset-y-0 left-[20%] border-0 border-l border-dashed border-ink/25" />
       <span className="absolute inset-y-0 right-[20%] border-0 border-r border-dashed border-ink/25" />
     </div>

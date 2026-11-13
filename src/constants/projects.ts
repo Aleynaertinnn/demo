@@ -5,7 +5,7 @@ export type Project = {
   title: string;
   description: string;
   sketch: string;
-  color: string;
+  color?: string;
   alt: string;
 };
 
@@ -16,8 +16,8 @@ export const projects: readonly Project[] = [
     category: 'Düşey yaşam',
     title: 'Kentle yükselen çizgiler.',
     description: 'Ritim, oran ve ışığın cephede kurduğu dengeli bir mimari dil.',
-    sketch: '/images/projects/proje-1.png',
-    color: '/images/projects/proje-1a.png',
+    sketch: '/images/projects/dusey-yasam/drawing.png',
+    color: '/images/projects/dusey-yasam/rendered.png',
     alt: 'Düşey cephe elemanları ve geniş giriş basamaklarıyla yüksek yapı',
   },
   {
@@ -26,8 +26,7 @@ export const projects: readonly Project[] = [
     category: 'Ortak mekân',
     title: 'Bir araya getiren mekânlar.',
     description: 'Şeffaf yüzeyler ve güçlü kütlelerle şekillenen bir buluşma alanı.',
-    sketch: '/images/projects/proje-2b.png',
-    color: '/images/projects/proje-2.png',
+    sketch: '/images/projects/ortak-mekan/drawing.png',
     alt: 'Geniş cam girişi ve terrakota cephe panelleriyle modern yapı',
   },
   {
@@ -36,8 +35,8 @@ export const projects: readonly Project[] = [
     category: 'Avlulu yaşam',
     title: 'Yaşamın merkezinde bir avlu.',
     description: 'İç ve dış mekânın su, doğal malzeme ve gün ışığıyla buluşması.',
-    sketch: '/images/projects/proje-3.png',
-    color: '/images/projects/proje-3a.png',
+    sketch: '/images/projects/avlulu-yasam/drawing.png',
+    color: '/images/projects/avlulu-yasam/rendered.png',
     alt: 'Havuzlu avlu etrafında düzenlenmiş iki katlı taş konut',
   },
   {
@@ -46,8 +45,8 @@ export const projects: readonly Project[] = [
     category: 'Akdeniz yaşamı',
     title: 'Yere ait, zamana açık.',
     description: 'Taşın dokusu, gölgeli teraslar ve doğayla iç içe bir yaşam fikri.',
-    sketch: '/images/projects/proje-4a.png',
-    color: '/images/projects/proje-4.png',
+    sketch: '/images/projects/akdeniz-yasami/drawing.png',
+    color: '/images/projects/akdeniz-yasami/rendered.png',
     alt: 'Kemerli açıklıkları, ahşap kepenkleri ve yeşil teraslarıyla taş konut',
   },
 ];

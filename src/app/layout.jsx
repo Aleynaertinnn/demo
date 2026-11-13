@@ -1,5 +1,5 @@
 import localFont from 'next/font/local';
-import Header from '@/components/layout/Header';
+import Header from '@/components/layout/header/Header';
 import Footer from '@/components/layout/footer/Footer';
 import SmoothScroll from '@/components/layout/SmoothScroll';
 import 'lenis/dist/lenis.css';

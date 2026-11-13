@@ -1,7 +1,8 @@
-# Kâğıt Atölyesi
+# Uluk Mimarlık
 
-Next.js ve React Three Fiber ile hazırlanan, kaydırmayla ilerleyen mimarlık atölyesi.
-Eskizden makete, iç mekândan gece cephesine ve yeni bir çizgiye uzanan sekiz sahne içerir.
+Next.js App Router, React Three Fiber, GSAP ve Tailwind CSS ile hazırlanan
+mimarlık sitesi. Ana sayfada kaydırmayla ilerleyen 3D atölye, seçili projeler,
+kurucu görüşü, yatay hizmet kartları ve iletişim daveti bulunur.
 
 ## Çalıştırma
 
@@ -10,132 +11,153 @@ Node.js 20.9 veya üzeri gerekir.
 ```sh
 npm install
 npm run dev
+npm run build
+npm run start
 ```
 
-Tarayıcıda http://localhost:3000 adresini açın.
+Geliştirme adresi: http://localhost:3000
 
-```sh
-npm run build    # Üretim derlemesi
-npm run start    # Derlenen siteyi çalıştırır
-```
-
-## Dosya düzeni
+## Klasör düzeni
 
 ```text
-app/                         Next.js sayfası, kök layout ve genel stiller
-components/                  Site genelinde kullanılabilen Header gibi bileşenler
-features/atelier/
-  AtelierExperience.jsx      Deneyimin istemci giriş noktası
-  atelier.css                Atölyeye ait arayüz stilleri
-  components/                Başlık, bölüm açıklamaları ve final yazısı
-  scene/                     Canlı Three.js sahnesi ve sahne bileşenleri
-  materials/                 Ortak illüstrasyon malzemeleri ve gece paleti
-  geometry/                  Maket ve iç mekânın prosedürel geometrisi
-  animation/                 Kamera rotası, kaydırma ve gün/gece geçişleri
-  config/                    Ölçüler, kat planı, tasarımlar ve model yolları
-public/models/
-  furniture/                 Masa, sandalye, dolap, kanepe ve masa aksesuarları
-  architecture/              Kapı ve atölye penceresi
-  characters/                Sahnede kullanılmayan, saklanan figür modeli
-scripts/models/              GLB modellerini üreten kaynak kod
+scripts/
+  models/build-atelier-models.mjs   Node.js ile GLB üretimi
+src/
+  app/
+    layout.jsx                     Fontlar, ortak header ve footer
+    page.jsx                       Ana sayfa bölümlerinin birleşimi
+    globals.css                    Tailwind, ortak renkler ve kâğıt dokusu
+    fonts/                         Yerel fontlar ve lisansları
+    projeler/
+      page.tsx                     Proje listesi
+      [slug]/page.tsx               Proje detayı
+      _components/                 Projeler alanının ortak bileşenleri
+        ProjectsGrid.tsx           Ana sayfa ve liste için ortak grid
+        ProjectCard.tsx
+        ProjectHero.tsx
+        ProjectInfo.tsx
+        ProjectGallery.tsx
+  components/
+    home/
+      projects/                    Ana sayfa vitrini ve giriş animasyonu
+      founder/                     Kurucu görünümü, pin durumu ve animasyonu
+      services/                    Hizmet paftaları ve yatay GSAP akışı
+      contact-cta/                 İletişim daveti ve görsel geçişi
+    layout/
+      header/                      Header ve yalnız ona ait scroll hook'u
+      footer/                      Footer ve sosyal medya hücreleri
+      SmoothScroll.tsx             Site genelindeki Lenis kaydırması
+    ui/                            Ortak Icon, CtaButton ve VisitButton
+  constants/                       Projeler, metinler, menü ve görsel yolları
+  features/atelier/
+    AtelierExperience.jsx          3D deneyimin giriş noktası
+    components/                    HeroIntro ve PresentationCaption
+    scene/                         Three.js sahnesi ve sahne bileşenleri
+    animation/                     Kamera, kaydırma ve açıklama animasyonları
+    geometry/                      Prosedürel bina ve iç mekân geometrisi
+    materials/                     Ortak illüstrasyon malzemeleri
+    config/                        Ölçüler, plan, akış ve model yolları
+    atelier.css                    3D deneyimin yerleşim stilleri
+public/
+  images/
+    brand/                         Logo
+    founder/                       Ali Uluk portresi
+    services/                      Hizmet arka plan görselleri
+    contact-cta/                   Çizim ve renklendirilmiş görsel
+    projects/<slug>/               Proje çizimi ve varsa renkli görseli
+  models/                          Üretilen GLB dosyaları
+design-references/                Canlı sitede kullanılmayan görsel alternatifleri
 ```
 
-`src/app/page.jsx` atölye deneyimini ve proje vitrinini çağırır. Bütün 3D içerik aynı Canvas içinde
-kalır; animasyonlar sayfanın kaydırma ilerlemesinden hesaplanır. Yukarı kaydırma
-sahneleri geri alır. **Başa dön** akışı sıfırlar. İşletim sisteminde hareket azaltma
-tercihi açıksa doğrudan final gösterilir.
+`app` sayfaları bölümleri birleştirir. Ana sayfa proje vitrini ve `/projeler`,
+`app/projeler/_components/ProjectsGrid.tsx` kullanır; proje listesi ana sayfa
+bileşenlerine bağımlı değildir. `_components` bir URL oluşturmaz.
+Bölüme özel hook ve durum dosyaları ilgili bölüm klasöründe kalır.
 
-## Nerede değişiklik yapılır?
+## İçerik ve görseller
 
-- Kamera kadrajı ve rotası: `features/atelier/animation/camera-poses.mjs`
-- Bölüm süreleri ve etiketleri: `features/atelier/config/journey.mjs`
-- Kaydırma ve yeniden başlatma: `features/atelier/animation/use-scroll-journey.js`
-- Odanın duvarları: `features/atelier/scene/Room.jsx`
-- Mobilyaların yerleşimi: `features/atelier/scene/Furniture.jsx`
-- Masa ve oda ölçüleri: `features/atelier/config/layout.mjs`
-- Plan ve maket geometrisi: `features/atelier/config/project-plan.mjs`, `features/atelier/geometry/`
-- Model dosyalarının adresleri: `features/atelier/config/assets.mjs`
+- Proje verileri ve ana sayfa proje metinleri: `src/constants/projects.ts`
+- Kurucu ve pin metinleri: `src/constants/founder.ts`
+- Hizmetler: `src/constants/services.ts`
+- İletişim daveti: `src/constants/contact-cta.ts`
+- Ortak header/footer menüsü: `src/constants/navigation.ts`
+- Footer, sosyal medya ve Studio AE bağlantısı: `src/constants/footer.ts`
 
-GLB dosyaları `public/models` altında sunulur. Maket ve iç mekân ise plan verisinden
-canlı olarak üretilir; ayrı bir bina GLB dosyasına bağlı değildir.
+Proje görselleri `public/images/projects/<slug>/drawing.png` ve
+`rendered.png` olarak tutulur. `color` alanı isteğe bağlıdır: renkli görsel
+bulunmuyorsa kart çizimi gösterir, renk geçişi etkinleşmez ve detay galerisi
+var olmayan dosyayı istemez. `ortak-mekan` projesinin renkli görseli henüz yoktur.
+
+Eski görsel alternatifleri `design-references/` altında saklanır. Bu klasör
+`public` dışında olduğu için uygulama tarafından sunulmaz.
+
+`/ofis` ve `/iletisim` bağlantıları planlanan sayfalardır; henüz sayfaları yoktur.
+Sosyal medya hesap adresleri istek doğrultusunda `null` tutulur; adres eklenene
+kadar hücreler bağlantı olarak davranmaz.
+
+## Animasyonlar
+
+- Atölyede sahne ve metinler aynı kaydırma ilerlemesini kullanır.
+- Ana sayfa proje metinleri ve kartları GSAP ile bir kez görünür.
+- Kurucu metinleri kelime kelime yükselip netleşir. `FounderPinContext.tsx`
+  pin durumunu, `useFounderAnimation.ts` animasyonları yönetir. Kullanıcı bir
+  pine geçtiğinde otomatik pin tanıtımı durur.
+- Üst/alt süsler ve fotoğraf köşeleri kendi konumlarında bağımsız tetiklenir.
+- İlk hizmet kartı sağ alttan girer; devamında kartlar yatay ilerler.
+- CTA çizimi yukarıdan aşağıya yumuşak bir maske ile renklenir.
+
+Hareket azaltma tercihinde GSAP girişleri çalışmaz; metinler ve görseller
+okunabilir kalır, hizmetler doğal yatay kaydırmayla erişilir. Atölye ilk
+kompozisyonda kalır; bölüm metinleri normal sayfa akışında gösterilir.
+
+## Atölye yapılandırması
+
+- Kamera: `src/features/atelier/animation/camera-poses.mjs`
+- Kaydırma: `src/features/atelier/animation/use-scroll-journey.js`
+- Metin zamanlaması: `src/features/atelier/animation/caption-timelines.js`
+- Bölüm metinleri: `src/features/atelier/config/presentation.mjs`
+- Bölüm sınırları: `src/features/atelier/config/journey.mjs`
+- Oda ölçüleri: `src/features/atelier/config/layout.mjs`
+- Plan: `src/features/atelier/config/project-plan.mjs`
+- Model yolları: `src/features/atelier/config/assets.mjs`
+
+Sahneye ait teknik yapılandırma özelliğin içinde kalır. Model üretici de
+aynı ölçü ve model yolu dosyalarını kullanır.
 
 ## Model üretimi
 
 ```sh
-npm run models              # Bütün modelleri yeniden üretir
-npm run models -- desk      # Yalnızca masayı yeniden üretir
+npm run models
+npm run models -- desk
 npm run models -- sofa small-bookcase
 ```
 
-Üretici ve web sahnesi aynı ölçü ve model yolu yapılandırmasını kullanır.
-Modellerin ayrıntıları için [model açıklamalarına](public/models/README.md) bakın.
+Betik `scripts/models/build-atelier-models.mjs` konumundadır. Çıktılar çalışma
+dizininden bağımsız olarak deponun `public/models/` klasörüne yazılır.
+Bina ve iç mekân geometrisi plan verisinden canlı üretilir.
+Saklanan figür modeli dahil ayrıntılar: [public/models/README.md](public/models/README.md).
 
-## Tipografi
+## Tasarım sistemi
 
-Fontlar `app/fonts/` altında lisanslarıyla birlikte saklanır; `next/font/local`
-ile sunulur. `app/layout.jsx` içindeki CSS değişkenleri:
+Yeni arayüzler Tailwind ile yazılır. Ortak renklerin kaynağı
+`src/app/globals.css` içindeki `@theme` bloğudur:
 
-- `--font-heading`: Space Grotesk — ana ve bölüm başlıkları.
-- `--font-body`: DM Sans — menü, paragraflar ve proje bilgileri.
-- `--font-notes`: Architects Daughter — başlık üstü açıklamalar ve eskiz notları.
+| Token | Kullanım |
+| --- | --- |
+| `paper`, `surface` | Krem kâğıt ve açık yüzeyler |
+| `ink`, `ink-muted` | Mürekkep mavisi ve ikincil metin |
+| `brand`, `brand-strong` | Ana mavi ve vurgu |
+| `on-brand` | Koyu zemindeki açık metin |
+| `line`, `line-strong` | Çerçeve ve kılavuz çizgileri |
 
-3D paftalardaki yazı dokuları da not fontunun yüklenmesini izler.
+3D sahnenin malzeme renkleri kendi özellik dosyalarında kalır.
+Tailwind Preflight sıfırlaması yüklenmez.
 
-## Tailwind ve ikonlar
+Fontlar `src/app/fonts/` altında lisanslarıyla saklanır ve `next/font/local`
+ile sunulur: Montserrat başlıklarda, Space Grotesk logoda, DM Sans gövde
+metninde, Architects Daughter notlarda kullanılır.
 
-Tailwind CSS 4, `postcss.config.mjs` ve `src/app/globals.css` üzerinden bağlıdır.
-Mevcut 3D sahne görünümünü korumak için tema ve utility katmanları yüklenir;
-Preflight sıfırlaması uygulanmaz. Yeni arayüzlerde Tailwind sınıfları kullanılabilir.
-`font-sans`, `font-display`, `font-handwritten` mevcut üç fontu;
-`text-ink`, `bg-paper`, `text-brand` ortak renkleri kullanır.
-
-Iconify için ortak bileşen `src/components/ui/Icon.tsx` dosyasıdır.
-İkon verileri yerel paketten tek tek içe aktarılır; dış API isteği gerekmez:
-
-```tsx
-import arrowUpRight from '@iconify-icons/lucide/arrow-up-right'
-import Icon from '@/components/ui/Icon'
-
-<Icon icon={arrowUpRight} className="text-brand" width={20} height={20} />
-```
-
-İkonlar varsayılan olarak dekoratiftir; yalnız ikon içeren düğmelere açıklayıcı
-bir `aria-label` verin.
-
-## Renk teması
-
-Ortak renklerin tek kaynağı `src/app/globals.css` içindeki `@theme` bloğudur.
-Arayüz bileşenlerinde doğrudan hex kodu yerine tema sınıflarını kullanın:
-
-| Renk | Kod | Kullanım |
-| --- | --- | --- |
-| Kâğıt kremi | `#f6f3e8` | `bg-paper` / `bg-background` |
-| Açık yüzey | `#fbf9ef` | `bg-surface` / `bg-card` |
-| Koyu mavi mürekkep | `#233d72` | `text-ink` / `text-foreground` |
-| Ana mavi | `#2452c7` | `text-brand` / `bg-primary` |
-| Koyu vurgu | `#2451bb` | `bg-brand-strong` |
-| Soluk mavi metin | `#58749d` | `text-ink-muted` |
-| Kenar çizgisi | `#7089ad` | `border-line/27` |
-
-`text-on-brand` koyu mavi zemin üzerindeki açık yazılar içindir.
-3D malzemelerin ve iç mekân tasarımlarının kendi renkleri sahne dosyalarında kalır.
-
-## Header bağlantıları
-
-Ortak header kök layout'ta yer alır. Logo, `public/images/uluk-mimarlik-u-logo.svg`
-dosyasından gelir; marka adı metindir. Masaüstünde hücreli menü, mobilde açılır menü kullanılır.
-
-- Logo: `/`
-- Projeler: `/projeler`; proje detayları `/projeler/[slug]` altında sunulur.
-- Ofis: `/ofis` (sayfa içeriği sonraki adımda hazırlanacak)
-- Hizmetler: `/#hizmetler` (anasayfa bölümü sonraki adımda hazırlanacak)
-- Süreç: `/#surec` (mevcut Three.js deneyimi)
-- Projenizi konuşalım: `/iletisim` (sayfa içeriği sonraki adımda hazırlanacak)
-
-## Projeler
-
-Proje verileri `src/constants/projects.ts` içinde tutulur. Ana sayfa ve
-`src/app/projeler/page.tsx` ortak `ProjectsSection` bileşenini kullanır.
-Liste ve detay bileşenlerinin tamamı `src/app/projeler/_components/` altındadır;
-stilleri Tailwind sınıflarıyla tanımlanır. `src/app/projeler/[slug]/page.tsx`
-mevcut veriden detay sayfalarını oluşturur; bilinmeyen proje adresleri 404 döndürür.
+Iconify ikonları yerel `@iconify-icons/lucide` paketinden alınır ve
+`src/components/ui/Icon.tsx` üzerinden gösterilir. Dış ikon API'si kullanılmaz.
+Dekoratif ikonlar ekran okuyucudan gizlenir; yalnız ikonlu düğmelerin açıklayıcı
+bir erişilebilir adı olmalıdır.

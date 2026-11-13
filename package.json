@@ -5,7 +5,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "models": "node src/scripts/models/build-atelier-models.mjs"
+    "models": "node scripts/models/build-atelier-models.mjs"
   },
   "dependencies": {
     "@iconify-icons/lucide": "^2.0.29",

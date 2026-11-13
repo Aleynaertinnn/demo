@@ -7,7 +7,7 @@ import menuIcon from '@iconify-icons/lucide/menu'
 import closeIcon from '@iconify-icons/lucide/x'
 import Icon from '@/components/ui/Icon'
 import VisitButton from '@/components/ui/VisitButton'
-import useHeaderScroll from '@/hooks/useHeaderScroll'
+import useHeaderScroll from './useHeaderScroll'
 
 import { navigation } from '@/constants/navigation'
 
@@ -40,7 +40,7 @@ export default function Header() {
         <Link href="/" aria-label="Uluk Mimarlık — Anasayfa" onClick={() => setMenuOpen(false)}
           className="group/logo flex min-h-16 items-center px-4 py-2 text-ink no-underline focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-brand lg:px-6">
           <span className="relative z-10 inline-flex shrink-0">
-            <Image src="/images/uluk-mimarlik-u-logo.svg" alt="" width={36} height={36} className="h-8 w-8 lg:h-9 lg:w-9" />
+            <Image src="/images/brand/uluk-logo.svg" alt="" width={36} height={36} className="h-8 w-8 lg:h-9 lg:w-9" />
           </span>
           <span className={`overflow-hidden transition-[max-width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none group-hover/logo:max-w-[220px] group-focus-visible/logo:max-w-[220px] ${collapsed ? 'max-w-0' : 'max-w-[220px]'}`}>
             <span className={`inline-block pl-2 font-logo-face text-[0.95rem] font-semibold tracking-[-0.035em] whitespace-nowrap transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none group-hover/logo:translate-x-0 group-focus-visible/logo:translate-x-0 sm:text-[1.1rem] lg:pl-2.5 ${collapsed ? '-translate-x-full' : 'translate-x-0'}`}>ULUK MİMARLIK</span>

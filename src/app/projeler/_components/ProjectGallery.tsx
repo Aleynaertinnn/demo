@@ -8,7 +8,7 @@ export default function ProjectGallery({ project }: { project: Project }) {
       <div className="grid gap-6 md:grid-cols-2">
         {[
           { src: project.sketch, label: 'Mimari çizim' },
-          { src: project.color, label: 'Mimari görselleştirme' },
+          ...(project.color ? [{ src: project.color, label: 'Mimari görselleştirme' }] : []),
         ].map(image => (
           <figure key={image.src} className="m-0 border border-solid border-line/40 bg-paper p-4">
             <div className="relative aspect-square">

@@ -39,8 +39,6 @@ export default function Footer() {
           </ul>
         </nav>
 
-        <Icon icon={plus} width={12} height={12} className="absolute -bottom-1.5 -left-1.5 text-paper/70" />
-        <Icon icon={plus} width={12} height={12} className="absolute -right-1.5 -bottom-1.5 text-paper/70" />
       </div>
 
       <FooterSocials />

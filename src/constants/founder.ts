@@ -1,7 +1,7 @@
 export const founder = {
   name: 'Ali Uluk',
   role: 'CO-FOUNDER',
-  image: '/images/profile-1.png',
+  image: '/images/founder/ali-uluk.png',
   quote: {
     opening: 'Bir mekânı değerli kılan,',
     emphasis: 'içinde kurulan hayattır.',

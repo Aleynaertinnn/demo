@@ -1,12 +1,12 @@
 'use client';
 
-import { useContext, useId, useState } from 'react';
-import { FounderPinContext } from './FounderReveal';
+import { useId, useState } from 'react';
+import { useFounderPins } from './FounderPinContext';
 import { founder } from '@/constants/founder';
 
 export default function FounderPins({ index, className = '' }: { index: number; className?: string }) {
   const [manualOpen, setOpen] = useState(false);
-  const { demoIndex, cancelDemo } = useContext(FounderPinContext);
+  const { demoIndex, cancelDemo } = useFounderPins();
   const open = manualOpen || demoIndex === index;
   const tooltipId = useId();
   const pin = founder.pins[index];

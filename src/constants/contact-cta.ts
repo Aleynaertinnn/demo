@@ -5,8 +5,8 @@ export const contactCta = {
     'İhtiyaçlarınızı dinleyelim; yerin ruhuna ve bütçenize uygun mekânı birlikte tasarlayalım.',
   button: { label: 'Projenizi konuşalım', href: '/iletisim' },
   artwork: {
-    drawing: '/images/footer-1.png',
-    color: '/images/footer-4.png',
+    drawing: '/images/contact-cta/drawing.png',
+    color: '/images/contact-cta/rendered.png',
     alt: 'Geniş basamaklar ve iç içe dairesel açıklıklarla kurgulanmış kavramsal mimari cephe',
     caption: 'Bir fikir. Birlikte şekillenen bir mekân.',
   },

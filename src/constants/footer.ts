@@ -1,6 +1,6 @@
 export const footer = {
   brand: 'ULUK MİMARLIK',
-  logo: '/images/uluk-mimarlik-u-logo.svg',
+  logo: '/images/brand/uluk-logo.svg',
   description: 'İnsanı, yeri ve yaşamı birlikte düşünen mimarlık.',
   note: 'Her ölçekte, aynı özen.',
   navigationLabel: 'KEŞFEDİN',

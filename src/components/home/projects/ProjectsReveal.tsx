@@ -6,11 +6,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ProjectsReveal({ children, enabled }: { children: ReactNode; enabled: boolean }) {
+export default function ProjectsReveal({ children }: { children: ReactNode }) {
   const root = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (!enabled) return;
     const media = gsap.matchMedia();
     let disposed = false;
     media.add('(prefers-reduced-motion: no-preference)', () => {
@@ -35,7 +34,7 @@ export default function ProjectsReveal({ children, enabled }: { children: ReactN
     }, root);
     document.fonts.ready.then(() => { if (!disposed) ScrollTrigger.refresh(); });
     return () => { disposed = true; media.revert(); };
-  }, [enabled]);
+  }, []);
 
   return <div ref={root}>{children}</div>;
 }

@@ -25,16 +25,18 @@ export default function ProjectCard({
       ))}
       <button
         type="button"
-        aria-label={`${project.category}: renkli görünümü ${colored ? 'kapat' : 'aç'}`}
-        aria-pressed={colored}
+        disabled={!project.color}
+        aria-label={project.color ? `${project.category}: renkli görünümü ${colored ? 'kapat' : 'aç'}` : project.alt}
+        aria-pressed={project.color ? colored : undefined}
         onClick={() => setColored((value) => !value)}
-        className="group block w-full cursor-pointer border-0 bg-transparent p-0 text-left text-inherit focus-visible:relative focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-brand"
+        className="group block w-full cursor-pointer disabled:cursor-default border-0 bg-transparent p-0 text-left text-inherit focus-visible:relative focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-brand"
       >
         <span className="mx-6 flex min-h-[72px] items-center gap-2 border-0 border-b border-solid border-line/30 py-5 text-[10px] leading-relaxed font-medium tracking-[.08em] uppercase">
           <span className="shrink-0 text-ink-muted tabular-nums">{String(index + 1).padStart(2, '0')} /</span>
           <span lang="tr">{project.category.toLocaleUpperCase('tr-TR')}</span>
         </span>
         <span className="relative isolate mx-3 block aspect-square overflow-hidden">
+          {project.color && (
           <Image
             src={project.color}
             alt=""
@@ -42,12 +44,13 @@ export default function ProjectCard({
             sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 25vw"
             className={`${imageClass} opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-aria-pressed:opacity-100`}
           />
+          )}
           <Image
             src={project.sketch}
             alt={project.alt}
             fill
             sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 25vw"
-            className={`${imageClass} opacity-100 group-hover:opacity-0 group-focus-visible:opacity-0 group-aria-pressed:opacity-0`}
+            className={`${imageClass} opacity-100 ${project.color ? 'group-hover:opacity-0 group-focus-visible:opacity-0 group-aria-pressed:opacity-0' : ''}`}
           />
         </span>
       </button>
@@ -63,7 +66,7 @@ export default function ProjectCard({
         <p className="mt-4 mb-6 max-w-[34ch] text-[13px] leading-[1.65] text-ink-muted">
           {project.description}
         </p>
-        
+
       </div>
     </article>
   );

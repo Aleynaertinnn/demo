@@ -3,7 +3,7 @@
 import useScrollJourney from './animation/use-scroll-journey';
 import { presentationSteps } from './config/presentation.mjs';
 import AtelierCanvas from './scene/AtelierCanvas';
-import HeroIntro from '@/components/home/HeroIntro';
+import HeroIntro from './components/HeroIntro';
 import PresentationCaption from './components/PresentationCaption';
 
 export default function AtelierExperience() {

@@ -1,14 +1,10 @@
-import { projects, projectsIntro } from '@/constants/projects';
-import ProjectCard from '@/app/projeler/_components/ProjectCard';
+import { projectsIntro } from '@/constants/projects';
+import ProjectsGrid from '@/app/projeler/_components/ProjectsGrid';
 import ProjectsReveal from './ProjectsReveal';
 
-export default function ProjectsSection({
-  headingTag: Heading = 'h2',
-}: {
-  headingTag?: 'h1' | 'h2';
-}) {
+export default function ProjectsSection() {
   return (
-    <ProjectsReveal enabled={Heading === 'h2'}>
+    <ProjectsReveal>
     <section
       id="projeler"
       aria-labelledby="projects-heading"
@@ -19,7 +15,7 @@ export default function ProjectsSection({
           <p data-projects-label className="mt-0 mb-3 font-handwritten text-xs leading-5 font-medium tracking-[.06em] sm:text-sm">
             {projectsIntro.eyebrow}
           </p>
-          <Heading
+          <h2
             id="projects-heading"
             aria-label={projectsIntro.title}
             className="m-0 max-w-[20ch] text-[clamp(30px,3.5vw,56px)] leading-[1.12] font-medium tracking-[-.055em]"
@@ -29,7 +25,7 @@ export default function ProjectsSection({
                 <span data-projects-line className="block">{line}</span>
               </span>
             ))}
-          </Heading>
+          </h2>
         </div>
         <p data-projects-note className="m-0 shrink-0 -rotate-4 font-handwritten text-[13px] leading-[1.6] sm:text-sm max-[600px]:self-end">
           {projectsIntro.noteLines[0]}
@@ -41,11 +37,7 @@ export default function ProjectsSection({
         </p>
       </div>
       <div data-projects-rule aria-hidden="true" className="h-px origin-left bg-line/40" />
-      <div data-projects-grid className="grid grid-cols-4 border border-t-0 border-solid border-line/40  max-[1000px]:grid-cols-2 max-[600px]:grid-cols-1">
-        {projects.map((project, index) => (
-          <ProjectCard key={project.id} project={project} index={index} />
-        ))}
-      </div>
+      <ProjectsGrid className="border-t-0" />
     </section>
     </ProjectsReveal>
   );
