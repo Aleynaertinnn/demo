@@ -1,5 +1,6 @@
 import { projectsIntro } from '@/constants/projects';
 import PageBanner from '@/components/ui/PageBanner';
+import PageLayout from '@/components/layout/PageLayout';
 import ProjectsGrid from './_components/ProjectsGrid';
 
 export const metadata = {
@@ -9,7 +10,7 @@ export const metadata = {
 
 export default function ProjectsPage() {
   return (
-    <main className="mx-3 mt-16 mb-12 text-ink sm:mx-5 md:mt-24">
+    <PageLayout>
       <PageBanner
         currentPage="Projeler"
         eyebrow={projectsIntro.eyebrow}
@@ -18,6 +19,6 @@ export default function ProjectsPage() {
         className="mb-8 md:mb-12"
       />
       <ProjectsGrid />
-    </main>
+    </PageLayout>
   );
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import PageContainer from '@/components/layout/PageContainer';
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -34,8 +35,8 @@ export default function Header() {
   }, [menuOpen])
 
   return (
-    <header data-collapsed={collapsed}
-      className="sticky top-3 z-50 mx-3 mt-3 border border-solid border-line/40 bg-paper/75 backdrop-blur-xl font-sans text-ink md:top-4 md:mx-5 md:mt-4">
+    <PageContainer as="header" data-site-header data-collapsed={collapsed}
+      className="sticky top-3 z-50 mt-3 border border-solid border-line/40 bg-paper/75 backdrop-blur-xl font-sans text-ink md:top-4 md:mt-4">
       <div className="grid grid-cols-[minmax(0,1fr)_auto]">
         <Link href="/" aria-label="Uluk Mimarlık — Anasayfa" onClick={() => setMenuOpen(false)}
           className="group/logo flex min-h-16 items-center px-4 py-2 text-ink no-underline focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-brand lg:px-6">
@@ -74,6 +75,6 @@ export default function Header() {
         ))}
         <VisitButton variant="mobile" onClick={() => setMenuOpen(false)} />
       </nav>}
-    </header>
+    </PageContainer>
   )
 }

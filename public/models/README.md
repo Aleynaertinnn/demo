@@ -2,7 +2,7 @@
 
 Özgün, prosedürel model seti. Mobilyalar `furniture/`, kapı ve pencere
 `architecture/`, sahnede kullanılmayan figür `characters/` klasöründedir.
-Model yolları `features/atelier/config/assets.mjs` üzerinden paylaşılır.
+Model yolları `src/features/atelier/config/assets.mjs` üzerinden paylaşılır.
 
 Kaynak: `scripts/models/build-atelier-models.mjs`. Yeniden üretmek için proje kökünde:
 
@@ -19,7 +19,7 @@ sandalye zemine oturur ve +Z yönüne bakar; lamba tabanı Y=0 üzerindedir.
 Sahnede malzemeler ortak illüstratif palete dönüştürülür.
 Bina maketi ve kaydırma animasyonu ayrı, mevcut plan geometrisini kullanır.
 
-Masanın ölçüleri `features/atelier/config/layout.mjs` içindeki `deskLayout` verisinden GLB'ye işlenir.
+Masanın ölçüleri `src/features/atelier/config/layout.mjs` içindeki `deskLayout` verisinden GLB'ye işlenir.
 Sahnede masa birim ölçekte kullanılır; ayak ve bağlantı çapları tabla ile esnetilmez.
 Yalnızca masayı yeniden üretmek için `node scripts/models/build-atelier-models.mjs desk` çalıştırın.
 

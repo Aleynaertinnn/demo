@@ -1,3 +1,4 @@
+import PageContainer from '@/components/layout/PageContainer';
 import Image from 'next/image';
 import plus from '@iconify-icons/lucide/plus';
 import Icon from '@/components/ui/Icon';
@@ -9,9 +10,9 @@ import FounderQuoteLine from './FounderQuoteLine';
 export default function FounderSection() {
   return (
     <FounderReveal>
-    <section
+    <PageContainer as="section"
       aria-labelledby="founder-heading"
-      className="relative mx-3 my-0 flex min-h-[calc(100svh-110px)] flex-col items-center justify-center border-0 border-y border-solid border-line/35 px-5 py-[clamp(20px,4svh,40px)] text-center text-ink sm:mx-5 sm:px-10"
+      className="relative my-0 flex min-h-[calc(100svh-110px)] flex-col items-center justify-center border-0 border-y border-solid border-line/35 px-5 py-[clamp(20px,4svh,40px)] text-center text-ink sm:px-10"
     >
       <div data-founder-ornament-group="top" aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 flex justify-between font-sans text-[10px] text-ink-muted">
         <span className="-translate-y-1/2 bg-paper pr-3"><span data-founder-ornament className="inline-flex text-ink-muted"><Icon icon={plus} width={14} height={14} /></span></span>
@@ -66,7 +67,7 @@ export default function FounderSection() {
         <span className="translate-y-1/2 bg-paper pr-3"><span data-founder-ornament className="inline-flex text-ink-muted"><Icon icon={plus} width={14} height={14} /></span></span>
         <span className="translate-y-1/2 bg-paper pl-3"><span data-founder-ornament className="inline-flex text-ink-muted"><Icon icon={plus} width={14} height={14} /></span></span>
       </div>
-    </section>
+    </PageContainer>
     </FounderReveal>
   );
 }

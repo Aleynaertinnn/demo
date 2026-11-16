@@ -1,4 +1,5 @@
 import PageBanner from '@/components/ui/PageBanner';
+import PageLayout from '@/components/layout/PageLayout';
 
 export const metadata = {
   title: 'İletişim | Uluk Mimarlık',
@@ -7,7 +8,7 @@ export const metadata = {
 
 export default function ProjectsPage() {
   return (
-    <main className="mx-3 mt-3 mb-12 text-ink sm:mx-5 md:mt-4">
+    <PageLayout>
       <PageBanner
         currentPage="İletişim"
         eyebrow="İletişim"
@@ -15,6 +16,6 @@ export default function ProjectsPage() {
         description="Her projemizde yerin ruhunu, ışığı ve yaşamın ihtiyaçlarını bir araya getiriyoruz. Çizgiden mekâna uzanan çalışmalarımızı keşfedin."
         className="mb-8 md:mb-12"
       />
-    </main>
+    </PageLayout>
   );
 }

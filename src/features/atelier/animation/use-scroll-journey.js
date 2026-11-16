@@ -33,7 +33,7 @@ export default function useScrollJourney() {
   useLayoutEffect(() => {
     const track = journey.current
     const container = frame.current
-    const header = document.querySelector('body > header')
+    const header = document.querySelector('[data-site-header]')
     const panels = [...container.querySelectorAll('[data-presentation-step]')]
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
     const captionMedia = gsap.matchMedia()

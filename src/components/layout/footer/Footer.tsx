@@ -7,13 +7,14 @@ import Icon from '@/components/ui/Icon';
 import { footer } from '@/constants/footer';
 import { navigation } from '@/constants/navigation';
 import FooterSocials from './FooterSocials';
+import PageLayout from '../PageLayout';
 
 const year = new Date().getFullYear();
 const focus = 'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-paper';
 
 export default function Footer() {
   return (
-    <footer aria-label="Site alt bilgisi" className="relative mx-3 mt-10 mb-3 bg-ink [body:has([data-contact-cta])_&]:mt-0 px-6 pt-10 pb-5 text-paper sm:mx-5 sm:mb-5 sm:px-10 sm:pt-12">
+    <PageLayout as="footer" aria-label="Site alt bilgisi" className="relative bg-ink px-6 pt-10 pb-5 text-paper sm:px-10 sm:pt-12">
       <div className="relative grid gap-9 border-0 border-b border-solid border-paper/25 pb-8 md:grid-cols-[1.4fr_1fr] md:gap-12 md:pb-10">
         <div>
           <Link href="/" aria-label="Uluk Mimarlık — Anasayfa" className={`inline-flex items-center gap-3 text-paper no-underline ${focus}`}>
@@ -55,6 +56,6 @@ export default function Footer() {
           <Icon icon={arrowUp} width={14} height={14} className="transition-transform duration-300 group-hover:-translate-y-1 motion-reduce:transition-none" />
         </a>
       </div>
-    </footer>
+    </PageLayout>
   );
 }
