@@ -11,7 +11,7 @@ export default function ServicesIntro() {
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <Image src={servicesIntro.images[0]} alt="" width={576} height={576} sizes="(max-width: 640px) 65vw, 40vw" className="absolute -bottom-12 -left-20 h-auto w-[65vw] max-w-[600px] opacity-[.12] mix-blend-screen sm:-left-24 sm:w-[40vw]" />
-        <Image src={servicesIntro.images[1]} alt="" width={768} height={768} sizes="(max-width: 640px) 70vw, 45vw" className="absolute -top-12 -right-20 h-auto w-[70vw] max-w-[720px] opacity-[.12] mix-blend-screen sm:-right-28 sm:w-[45vw]" />
+        <Image loading="eager" src={servicesIntro.images[1]} alt="" width={768} height={768} sizes="(max-width: 640px) 70vw, 45vw" className="absolute -top-12 -right-20 h-auto w-[70vw] max-w-[720px] opacity-[.12] mix-blend-screen sm:-right-28 sm:w-[45vw]" />
       </div>
 
       <div className="mx-auto max-w-5xl text-center">
