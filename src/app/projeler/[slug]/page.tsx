@@ -4,6 +4,9 @@ import { projects } from '@/constants/projects';
 import ProjectHero from '../_components/ProjectHero';
 import ProjectInfo from '../_components/ProjectInfo';
 import ProjectGallery from '../_components/ProjectGallery';
+import ProjectComparison from '../_components/ProjectComparison';
+import ProjectNavigation from '../_components/ProjectNavigation';
+import PageLayout from '@/components/layout/PageLayout';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -23,11 +26,16 @@ export default async function ProjectPage({ params }: Props) {
   const project = projects.find(project => project.slug === slug);
   if (!project) notFound();
 
+  const index = projects.indexOf(project);
+  const previousProject = projects[(index - 1 + projects.length) % projects.length];
+  const nextProject = projects[(index + 1) % projects.length];
   return (
-    <main className="mx-auto mt-16 mb-16 max-w-7xl px-5 text-ink md:mt-24 md:px-8">
+    <PageLayout>
       <ProjectHero project={project} />
       <ProjectInfo project={project} />
+      <ProjectComparison project={project} />
       <ProjectGallery project={project} />
-    </main>
+      {projects.length > 1 && <ProjectNavigation previous={previousProject} next={nextProject} />}
+    </PageLayout>
   );
 }

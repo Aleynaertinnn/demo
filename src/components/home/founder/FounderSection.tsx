@@ -11,6 +11,7 @@ export default function FounderSection() {
   return (
     <FounderReveal>
     <PageContainer as="section"
+      id="bakis-acimiz"
       aria-labelledby="founder-heading"
       className="relative my-0 flex min-h-[calc(100svh-110px)] flex-col items-center justify-center border-0 border-y border-solid border-line/35 px-5 py-[clamp(20px,4svh,40px)] text-center text-ink sm:px-10"
     >
