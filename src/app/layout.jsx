@@ -2,6 +2,7 @@ import localFont from 'next/font/local';
 import Header from '@/components/layout/header/Header';
 import Footer from '@/components/layout/footer/Footer';
 import SmoothScroll from '@/components/layout/SmoothScroll';
+import CookiePreferences from '@/components/privacy/CookiePreferences';
 import 'lenis/dist/lenis.css';
 import './globals.css';
 import '@/features/atelier/atelier.css';
@@ -47,6 +48,7 @@ export default function Layout({ children }) {
         <Header />
         {children}
         <Footer />
+        <CookiePreferences />
       </body>
     </html>
   );

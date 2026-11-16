@@ -8,6 +8,7 @@ import { footer } from '@/constants/footer';
 import { navigation } from '@/constants/navigation';
 import { legalDocuments } from '@/constants/legal';
 import FooterSocials from './FooterSocials';
+import CookieSettingsButton from '@/components/privacy/CookieSettingsButton';
 import PageLayout from '../PageLayout';
 
 const year = new Date().getFullYear();
@@ -46,6 +47,7 @@ export default function Footer() {
       <FooterSocials />
       <nav aria-label="Yasal bilgilendirmeler" className="flex flex-wrap items-center gap-x-6 gap-y-1 border-0 border-b border-solid border-paper/25 py-4">
         <Link href="/yasal" className={`inline-flex min-h-11 items-center text-[10px] font-semibold text-paper no-underline hover:underline ${focus}`}>YASAL BİLGİLENDİRMELER</Link>
+        <CookieSettingsButton />
         {legalDocuments.map(document => <Link key={document.slug} href={`/yasal/${document.slug}`} className={`inline-flex min-h-11 items-center text-[10px] text-paper/70 no-underline hover:text-paper hover:underline ${focus}`}>{document.title}</Link>)}
       </nav>
 
