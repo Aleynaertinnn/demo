@@ -6,6 +6,7 @@ import ProjectInfo from '../_components/ProjectInfo';
 import ProjectGallery from '../_components/ProjectGallery';
 import ProjectComparison from '../_components/ProjectComparison';
 import ProjectNavigation from '../_components/ProjectNavigation';
+import ProjectCta from '../_components/ProjectCta';
 import PageLayout from '@/components/layout/PageLayout';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -35,6 +36,7 @@ export default async function ProjectPage({ params }: Props) {
       <ProjectInfo project={project} />
       <ProjectComparison project={project} />
       <ProjectGallery project={project} />
+      <ProjectCta />
       {projects.length > 1 && <ProjectNavigation previous={previousProject} next={nextProject} />}
     </PageLayout>
   );

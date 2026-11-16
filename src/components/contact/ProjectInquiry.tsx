@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import type { FormEvent, KeyboardEvent } from 'react';
 import { projectTypes, serviceTypes, steps, validateInquiry, submitInquiry } from './project-inquiry';
 import type { Errors, Inquiry } from './project-inquiry';
@@ -117,6 +118,7 @@ export default function ProjectInquiry() {
               </div>
             </>}
           </div>
+          {step === 3 && <p className="mt-6 mb-0 text-xs leading-relaxed text-ink-muted">Formdaki kişisel verilere ilişkin açıklamalar için <Link href="/yasal/kvkk-aydinlatma-metni" target="_blank" rel="noopener noreferrer" className="text-ink underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-brand">KVKK Aydınlatma Metni’ni (yeni sekme)</Link> inceleyebilirsiniz.</p>}
           {result && <p className="my-2.5 border-0 border-l-2 border-solid border-brand pl-2.5 text-[13px] leading-relaxed text-ink" role="alert">{result}</p>}
           <div className="mt-8 flex justify-between gap-4 border-0 border-t border-solid border-line/40 pt-6 [&>button]:min-h-14 [&>button]:cursor-pointer [&>button]:rounded-none [&>button]:border-0 [&>button]:text-xs [&>button:focus-visible]:outline-2 [&>button:focus-visible]:outline-offset-3 [&>button:focus-visible]:outline-brand [&>button:disabled]:cursor-wait [&>button:disabled]:opacity-60">
             {step > 0 && <button type="button" disabled={sending} className="bg-transparent px-2 py-4 text-ink" onClick={() => move(step - 1)}>← Geri</button>}

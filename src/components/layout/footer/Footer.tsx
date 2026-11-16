@@ -6,6 +6,7 @@ import plus from '@iconify-icons/lucide/plus';
 import Icon from '@/components/ui/Icon';
 import { footer } from '@/constants/footer';
 import { navigation } from '@/constants/navigation';
+import { legalDocuments } from '@/constants/legal';
 import FooterSocials from './FooterSocials';
 import PageLayout from '../PageLayout';
 
@@ -43,6 +44,10 @@ export default function Footer() {
       </div>
 
       <FooterSocials />
+      <nav aria-label="Yasal bilgilendirmeler" className="flex flex-wrap items-center gap-x-6 gap-y-1 border-0 border-b border-solid border-paper/25 py-4">
+        <Link href="/yasal" className={`inline-flex min-h-11 items-center text-[10px] font-semibold text-paper no-underline hover:underline ${focus}`}>YASAL BİLGİLENDİRMELER</Link>
+        {legalDocuments.map(document => <Link key={document.slug} href={`/yasal/${document.slug}`} className={`inline-flex min-h-11 items-center text-[10px] text-paper/70 no-underline hover:text-paper hover:underline ${focus}`}>{document.title}</Link>)}
+      </nav>
 
       <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 pt-4 text-[9px] leading-relaxed tracking-[.04em] text-paper/65">
         <p className="m-0">© {year} Uluk Mimarlık. Tüm hakları saklıdır.</p>
