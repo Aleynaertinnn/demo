@@ -1,7 +1,7 @@
 import { projectsIntro } from '@/constants/projects';
 import PageBanner from '@/components/ui/PageBanner';
 import PageLayout from '@/components/layout/PageLayout';
-import ProjectsGrid from './_components/ProjectsGrid';
+import ProjectsListing from './_components/ProjectsListing';
 
 export const metadata = {
   title: 'Projeler | Uluk Mimarlık',
@@ -18,7 +18,7 @@ export default function ProjectsPage() {
         description="Her projemizde yerin ruhunu, ışığı ve yaşamın ihtiyaçlarını bir araya getiriyoruz. Çizgiden mekâna uzanan çalışmalarımızı keşfedin."
         className="mb-8 md:mb-12"
       />
-      <ProjectsGrid />
+      <ProjectsListing />
     </PageLayout>
   );
 }
